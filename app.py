@@ -175,26 +175,15 @@ elif menu == "Ejercicios Pandas":
     st.bar_chart(promedio_materia)
     st.dataframe(promedio_materia)
 
-   # 3️⃣ Manejo de valores faltantes
-st.subheader("🧠 3. Imputación de valores faltantes")
-
-# Contar valores faltantes
-faltantes = df.isnull().sum()
-st.write("Valores faltantes por columna:")
-st.write(faltantes)
-
-# Reemplazar valores faltantes:
-# - Columnas numéricas → promedio
-# - Columnas de texto → "Desconocido"
-for col in df.columns:
-    if df[col].dtype in ["float64", "int64"]:
-        df[col].fillna(df[col].mean(), inplace=True)
-    else:
-        df[col].fillna("Desconocido", inplace=True)
-
-    st.success("✅ Todos los valores faltantes han sido reemplazados automáticamente")
+    # 3️⃣ Manejo de valores faltantes
+    st.subheader("🧠 3. Imputación de valores faltantes")
+    faltantes = df.isnull().sum()
+    st.write("Valores faltantes por columna:")
+    st.write(faltantes)
+    df["Nota"].fillna(df["Nota"].mean(), inplace=True)
+    df["Edad"].fillna(df["Edad"].median(), inplace=True)
+    st.success("✅ Valores faltantes reemplazados por promedio o mediana")
     st.dataframe(df)
-
 
     # 4️⃣ Tabla dinámica
     st.subheader("📅 4. Tabla dinámica: Edad y Nota promedio por materia")
