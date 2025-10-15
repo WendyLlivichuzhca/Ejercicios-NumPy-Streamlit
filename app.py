@@ -36,9 +36,9 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 
-/* Sidebar botones tipo tarjeta mejorados */
+/* Botones premium animados */
 .sidebar-button {
-    background: linear-gradient(135deg, #ff6a00, #ee0979); /* gradiente llamativo */
+    background: linear-gradient(135deg, #ff6a00, #ee0979);
     color: white !important;
     font-weight: 700;
     border-radius: 16px;
@@ -51,14 +51,22 @@ body {
     gap: 0.8rem;
     margin: 0.7rem 0;
     box-shadow: 0 8px 25px rgba(0,0,0,0.35);
-    transition: all 0.3s ease;
     cursor: pointer;
     font-size: 1.1rem;
     position: relative;
     overflow: hidden;
+    transition: all 0.3s ease;
+    animation: colorShift 5s infinite alternate;
 }
 
-/* Glow y animación al pasar el mouse */
+/* Cambio dinámico de colores gradiente */
+@keyframes colorShift {
+    0% { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+    50% { background: linear-gradient(135deg, #42a5f5, #1e88e5); }
+    100% { background: linear-gradient(135deg, #ffb347, #ffcc33); }
+}
+
+/* Glow animado */
 .sidebar-button::before {
     content: "";
     position: absolute;
@@ -66,17 +74,24 @@ body {
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
     opacity: 0;
     transition: all 0.5s ease;
+    animation: glowPulse 2s infinite;
 }
 .sidebar-button:hover::before {
     opacity: 1;
-    transform: rotate(45deg) scale(1);
 }
+@keyframes glowPulse {
+    0% { transform: scale(0.8); opacity: 0.3; }
+    50% { transform: scale(1); opacity: 0.5; }
+    100% { transform: scale(0.8); opacity: 0.3; }
+}
+
+/* Efecto “levitación” al pasar el mouse */
 .sidebar-button:hover {
-    transform: scale(1.08) rotate(-1deg);
-    box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+    transform: translateY(-5px) scale(1.08);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.45);
 }
 
 /* Botón activo */
@@ -84,9 +99,10 @@ body {
     background: linear-gradient(135deg, #ffd700, #ff8c00) !important;
     color: #1b1b1b !important;
     font-weight: 800;
-    box-shadow: 0 14px 40px rgba(0,0,0,0.45);
+    box-shadow: 0 14px 40px rgba(0,0,0,0.5);
     transform: scale(1.1);
 }
+
 
 
 
