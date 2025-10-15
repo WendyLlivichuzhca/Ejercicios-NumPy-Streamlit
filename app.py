@@ -1,10 +1,9 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import streamlit.components.v1 as components
 
 # ============================
-# 🎨 CSS MODERNO ANIMADO
+# 🎨 ESTILO MODERNO WEB PREMIUM
 # ============================
 st.markdown("""
 <style>
@@ -13,80 +12,18 @@ body {
     background: linear-gradient(135deg, #e0f7fa 0%, #e3f2fd 100%);
     font-family: 'Poppins', sans-serif;
     color: #2b2b2b;
-    margin:0;
+    margin: 0;
+    padding: 0;
 }
 
-/* Sidebar botones animados */
-.sidebar-button {
-    background: linear-gradient(135deg, #ff6a00, #ee0979);
-    color: white;
-    font-weight: 700;
-    border-radius: 16px;
-    border: none;
-    padding: 1rem 1.2rem;
-    width: 100%;
-    text-align: left;
-    margin: 0.7rem 0;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-    animation: colorShift 5s infinite alternate;
-}
-
-/* Hover dinámico */
-.sidebar-button:hover {
-    transform: translateY(-5px) scale(1.05);
-    box-shadow: 0 12px 35px rgba(0,0,0,0.45);
-}
-
-/* Botón activo */
-.sidebar-button.active {
-    background: linear-gradient(135deg, #ffd700, #ff8c00);
-    color: #1b1b1b;
-    font-weight: 800;
-    box-shadow: 0 14px 40px rgba(0,0,0,0.5);
-}
-
-/* Animación de cambio de color */
-@keyframes colorShift {
-    0% { background: linear-gradient(135deg, #ff6a00, #ee0979); }
-    50% { background: linear-gradient(135deg, #42a5f5, #1e88e5); }
-    100% { background: linear-gradient(135deg, #ffb347, #ffcc33); }
-}
-
-/* DataFrames y tablas */
-.stDataFrame table {
-    border-collapse: collapse;
-    width: 100%;
-}
-.stDataFrame th, .stDataFrame td {
-    padding: 0.5rem 0.8rem;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-.stDataFrame tr:hover {
-    background-color: #f1f1f1;
-}
-
-/* Metrics */
-.stMetric {
-    border-radius: 12px;
+/* Sidebar */
+.sidebar .sidebar-content {
     background: #ffffff;
     padding: 1rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
 }
 
-/* Footer */
-.footer {
-    text-align: center;
-    font-size: 0.9rem;
-    color: #555;
-    margin-top: 2.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid #ddd;
-}
-
-/* Sidebar título */
 .sidebar-title {
     background: linear-gradient(135deg, #0288d1, #26c6da);
     color: white;
@@ -98,14 +35,112 @@ body {
     margin-bottom: 1rem;
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
+
+/* Botones premium animados */
+.sidebar-button {
+    background: linear-gradient(270deg, #ff6a00, #ee0979, #42a5f5, #1e88e5);
+    background-size: 600% 600%;
+    color: white !important;
+    font-weight: 700;
+    border-radius: 16px;
+    border: none;
+    padding: 1rem 1.2rem;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 0.7rem 0;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+    cursor: pointer;
+    font-size: 1.1rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    animation: colorShift 8s ease infinite;
+}
+
+/* Gradiente animado */
+@keyframes colorShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Glow animado */
+.sidebar-button::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
+    opacity: 0;
+    transition: all 0.5s ease;
+    animation: glowPulse 2s infinite;
+}
+.sidebar-button:hover::before {
+    opacity: 1;
+}
+@keyframes glowPulse {
+    0% { transform: scale(0.8); opacity: 0.3; }
+    50% { transform: scale(1); opacity: 0.5; }
+    100% { transform: scale(0.8); opacity: 0.3; }
+}
+
+/* Efecto “levitación” al hover */
+.sidebar-button:hover {
+    transform: translateY(-6px) scale(1.1);
+    box-shadow: 0 16px 50px rgba(255,105,180,0.6), 0 8px 20px rgba(0,0,0,0.25);
+}
+
+/* Ripple effect al click */
+.sidebar-button:active::after {
+    content: "";
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: ripple 0.6s linear;
+}
+@keyframes ripple {
+    to { transform: translate(-50%, -50%) scale(4); opacity: 0; }
+}
+
+/* Botón activo */
+.sidebar-button.active {
+    background: linear-gradient(135deg, #ffd700, #ff8c00) !important;
+    color: #1b1b1b !important;
+    font-weight: 800;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.5);
+    transform: scale(1.12);
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #ddd;
+}
 </style>
 """, unsafe_allow_html=True)
 
 # ============================
-# 🎯 SIDEBAR CON BOTONES PREMIUM
+# 🧭 SIDEBAR
 # ============================
-if "menu" not in st.session_state:
-    st.session_state.menu = "Ejercicio 1"
+st.sidebar.markdown("""
+<div class="sidebar-title">
+📊 Tarea 4: NumPy + Pandas + Streamlit
+</div>
+""", unsafe_allow_html=True)
 
 menu_options = [
     ("📈 Ejercicio 1", "Ejercicio 1"),
@@ -116,36 +151,17 @@ menu_options = [
     ("🐼 Ejercicios Pandas", "Ejercicios Pandas")
 ]
 
-# Sidebar título
-st.sidebar.markdown('<div class="sidebar-title">📊 Tarea 4: NumPy + Pandas + Streamlit</div>', unsafe_allow_html=True)
+if "menu" not in st.session_state:
+    st.session_state.menu = "Ejercicio 1"
 
-# Crear botones HTML con Streamlit Components
+# Crear botones premium con clase CSS
 for display, option in menu_options:
-    active_class = "active" if st.session_state.menu == option else ""
-    button_html = f"""
-    <button class="sidebar-button {active_class}" onclick="window.parent.postMessage({{func:'setMenu', value:'{option}'}}, '*')">
-        {display}
-    </button>
-    """
-    st.sidebar.components.v1.html(button_html, height=60)
+    button_html = f'<button class="sidebar-button {"active" if st.session_state.menu==option else ""}">{display}</button>'
+    if st.sidebar.button(display, key=option):
+        st.session_state.menu = option
 
-# JS para capturar clicks y actualizar Streamlit
-components.html("""
-<script>
-window.addEventListener('message', event => {
-    const data = event.data;
-    if (data.func === 'setMenu') {
-        fetch(`/?menu_option=${data.value}`)
-    }
-});
-</script>
-""", height=0)
 
-# ============================
-# 🔹 CAPTURAR MENÚ SELECCIONADO
-# ============================
-menu = st.experimental_get_query_params().get("menu_option", [st.session_state.menu])[0]
-st.session_state.menu = menu
+menu = st.session_state.menu
 
 # ============================
 # 🧮 EJERCICIOS NUMPY
@@ -189,7 +205,7 @@ elif menu == "Ejercicio 4":
     st.write("Vector normalizado:", normalizado)
 
 # ============================
-# 🎓 GESTIÓN DE ESTUDIANTES
+# 🎓 ESTUDIANTES
 # ============================
 elif menu == "Estudiantes":
     st.subheader("🎓 Gestión de Estudiantes del Ciclo")
@@ -211,7 +227,7 @@ elif menu == "Estudiantes":
 elif menu == "Ejercicios Pandas":
     st.subheader("🐼 Ejercicios con Pandas (usando datos de estudiantes)")
 
-    # 1️⃣ Cargar CSV
+    # 1️⃣ Cargar CSV directamente desde el proyecto
     st.subheader("📂 1. Cargar DataFrame de estudiantes")
     df = pd.read_csv("estudiantes.csv")
     st.success("✅ Archivo cargado correctamente desde el proyecto")
@@ -223,16 +239,19 @@ elif menu == "Ejercicios Pandas":
     st.bar_chart(promedio_materia)
     st.dataframe(promedio_materia)
 
-    # 3️⃣ Manejo de valores faltantes
+    # 3️⃣ Manejo de valores faltantes (generalizado)
     st.subheader("🧠 3. Imputación de valores faltantes")
     faltantes = df.isnull().sum()
     st.write("Valores faltantes por columna:")
     st.write(faltantes)
+
+    # Reemplazar todos los valores faltantes automáticamente
     for col in df.columns:
         if df[col].dtype in ["float64", "int64"]:
             df[col].fillna(df[col].mean(), inplace=True)
         else:
             df[col].fillna("Desconocido", inplace=True)
+
     st.success("✅ Todos los valores faltantes han sido reemplazados automáticamente")
     st.dataframe(df)
 
