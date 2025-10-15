@@ -3,26 +3,38 @@ import numpy as np
 import pandas as pd
 
 # ============================
-# 🎨 ESTILO MODERNO PROFESIONAL
+# 🎨 ESTILO MODERNO PROFESIONAL UNIFICADO
 # ============================
 st.markdown("""
 <style>
+/* Fondo general y tipografía */
 body {
     background: linear-gradient(135deg, #e0f7fa 0%, #e3f2fd 100%);
     font-family: 'Poppins', sans-serif;
     color: #2b2b2b;
 }
+
+/* Sidebar */
+.sidebar .sidebar-content {
+    background: #ffffff;
+    padding: 1rem;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
 .sidebar-title {
     background: linear-gradient(135deg, #0288d1, #26c6da);
     color: white;
-    padding: 1rem 1.2rem;
-    border-radius: 16px;
+    padding: 1rem;
+    border-radius: 12px;
     text-align: center;
     font-size: 1.3rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
+
+/* Sidebar buttons */
 .sidebar-button {
     background: linear-gradient(135deg, #42a5f5, #26c6da);
     color: white !important;
@@ -36,8 +48,9 @@ body {
     align-items: center;
     gap: 0.5rem;
     margin: 0.5rem 0;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     transition: transform 0.2s, background 0.3s;
+    cursor: pointer;
 }
 .sidebar-button:hover {
     transform: scale(1.05);
@@ -47,8 +60,32 @@ body {
     background: linear-gradient(135deg, #ff8a65, #ff7043) !important;
     color: white !important;
     font-weight: 700;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
 }
+
+/* DataFrames y tablas */
+.stDataFrame table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.stDataFrame th, .stDataFrame td {
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+.stDataFrame tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Metrics */
+.stMetric {
+    border-radius: 12px;
+    background: #ffffff;
+    padding: 1rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Footer */
 .footer {
     text-align: center;
     font-size: 0.9rem;
@@ -82,6 +119,7 @@ for option in menu_options:
         st.session_state.menu = option
 
 menu = st.session_state.menu
+
 
 # ============================
 # 🧮 EJERCICIOS NUMPY
