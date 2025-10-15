@@ -36,9 +36,9 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 
-/* Sidebar botones tipo tarjeta */
+/* Sidebar botones tipo tarjeta mejorados */
 .sidebar-button {
-    background: linear-gradient(135deg, #42a5f5, #1e88e5);
+    background: linear-gradient(135deg, #ff6a00, #ee0979); /* gradiente llamativo */
     color: white !important;
     font-weight: 700;
     border-radius: 16px;
@@ -50,7 +50,7 @@ body {
     align-items: center;
     gap: 0.8rem;
     margin: 0.7rem 0;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.35);
     transition: all 0.3s ease;
     cursor: pointer;
     font-size: 1.1rem;
@@ -75,18 +75,19 @@ body {
     transform: rotate(45deg) scale(1);
 }
 .sidebar-button:hover {
-    transform: scale(1.07);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+    transform: scale(1.08) rotate(-1deg);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.4);
 }
 
 /* Botón activo */
 .sidebar-button.active {
-    background: linear-gradient(135deg, #ffb347, #ffcc33) !important;
+    background: linear-gradient(135deg, #ffd700, #ff8c00) !important;
     color: #1b1b1b !important;
     font-weight: 800;
-    box-shadow: 0 14px 35px rgba(0,0,0,0.45);
+    box-shadow: 0 14px 40px rgba(0,0,0,0.45);
     transform: scale(1.1);
 }
+
 
 
 
@@ -133,16 +134,23 @@ st.sidebar.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+# Lista de opciones con emojis
 menu_options = [
-    "Ejercicio 1", "Ejercicio 2", "Ejercicio 3", "Ejercicio 4",
-    "Estudiantes", "Ejercicios Pandas"
+    ("📈 Ejercicio 1", "Ejercicio 1"),
+    ("🎲 Ejercicio 2", "Ejercicio 2"),
+    ("📊 Ejercicio 3", "Ejercicio 3"),
+    ("⚙️ Ejercicio 4", "Ejercicio 4"),
+    ("🎓 Estudiantes", "Estudiantes"),
+    ("🐼 Ejercicios Pandas", "Ejercicios Pandas")
 ]
 
 if "menu" not in st.session_state:
     st.session_state.menu = "Ejercicio 1"
 
-for option in menu_options:
-    if st.sidebar.button(option, key=option):
+# Crear botones premium con clase CSS
+for display, option in menu_options:
+    button_html = f'<button class="sidebar-button {"active" if st.session_state.menu==option else ""}">{display}</button>'
+    if st.sidebar.button(display, key=option):
         st.session_state.menu = option
 
 menu = st.session_state.menu
