@@ -147,16 +147,6 @@ elif menu == "Estudiantes":
 elif menu == "Ejercicios Pandas":
     st.subheader("🐼 Ejercicios con Pandas (usando datos de estudiantes)")
 
-    st.markdown("""
-    **Ejercicio 1:** Carga el archivo `estudiantes.csv`  
-    **Ejercicio 2:** Calcula el promedio de notas por materia  
-    **Ejercicio 3:** Identifica y completa valores faltantes  
-    **Ejercicio 4:** Crea una tabla dinámica con edad promedio y nota por materia  
-    **Ejercicio 5:** Realiza un merge entre dos DataFrames (por ejemplo, estudiantes y tutores)
-    """)
-
-    st.markdown("---")
-
     # 1️⃣ Cargar CSV directamente desde el proyecto
     st.subheader("📂 1. Cargar DataFrame de estudiantes")
     df = pd.read_csv("estudiantes.csv")
