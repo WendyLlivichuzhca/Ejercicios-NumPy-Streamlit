@@ -36,9 +36,9 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 
-/* Sidebar buttons llamativos */
+/* Sidebar botones tipo tarjeta */
 .sidebar-button {
-    background: linear-gradient(135deg, #ff6a00, #ee0979); /* gradiente brillante */
+    background: linear-gradient(135deg, #42a5f5, #1e88e5);
     color: white !important;
     font-weight: 700;
     border-radius: 16px;
@@ -50,23 +50,44 @@ body {
     align-items: center;
     gap: 0.8rem;
     margin: 0.7rem 0;
-    box-shadow: 0 6px 25px rgba(0,0,0,0.3);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
     transition: all 0.3s ease;
     cursor: pointer;
     font-size: 1.1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Glow y animación al pasar el mouse */
+.sidebar-button::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+.sidebar-button:hover::before {
+    opacity: 1;
+    transform: rotate(45deg) scale(1);
 }
 .sidebar-button:hover {
-    transform: scale(1.08) rotate(-1deg);
-    background: linear-gradient(135deg, #ee0979, #ff6a00);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    transform: scale(1.07);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.35);
 }
+
+/* Botón activo */
 .sidebar-button.active {
-    background: linear-gradient(135deg, #ffd700, #ff8c00) !important;
+    background: linear-gradient(135deg, #ffb347, #ffcc33) !important;
     color: #1b1b1b !important;
     font-weight: 800;
-    box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+    box-shadow: 0 14px 35px rgba(0,0,0,0.45);
     transform: scale(1.1);
 }
+
 
 
 /* DataFrames y tablas */
