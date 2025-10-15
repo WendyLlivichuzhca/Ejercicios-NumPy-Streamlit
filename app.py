@@ -141,7 +141,7 @@ elif menu == "Estudiantes":
     csv = df_edit.to_csv(index=False).encode("utf-8")
     st.download_button("📥 Descargar CSV", csv, "estudiantes.csv", "text/csv")
 
-    # ============================
+# ============================
 # 🐼 EJERCICIOS PANDAS
 # ============================
 elif menu == "Ejercicios Pandas":
@@ -157,15 +157,13 @@ elif menu == "Ejercicios Pandas":
 
     st.markdown("---")
 
-    # 1️⃣ Cargar CSV
-    st.subheader("📂 1. Cargar o generar DataFrame de estudiantes")
-    uploaded_file = st.file_uploader("Sube tu archivo CSV de estudiantes", type=["csv"])
-
-    if uploaded_file is not None:
-        df = pd.read_csv(uploaded_file)
-        st.success("✅ Archivo cargado correctamente")
-    else:
-        st.info("Usando datos de ejemplo de estudiantes...")
+    # 1️⃣ Cargar CSV directamente desde el proyecto
+    st.subheader("📂 1. Cargar DataFrame de estudiantes")
+    try:
+        df = pd.read_csv("estudiantes.csv")
+        st.success("✅ Archivo cargado correctamente desde el proyecto")
+    except FileNotFoundError:
+        st.warning("❌ No se encontró 'estudiantes.csv'. Usando datos de ejemplo.")
         df = pd.DataFrame({
             "Nombres": ["Wendy", "Erick", "Sebastián", "Kenny", "Adriana", "Edwin"],
             "Apellidos": ["Llivichuzhca", "Torres", "Pérez", "Mora", "Rojas", "Vera"],
@@ -182,14 +180,20 @@ elif menu == "Ejercicios Pandas":
     st.bar_chart(promedio_materia)
     st.dataframe(promedio_materia)
 
-    # 3️⃣ Manejo de valores faltantes
+    # 3️⃣ Manejo de valores faltantes (generalizado)
     st.subheader("🧠 3. Imputación de valores faltantes")
     faltantes = df.isnull().sum()
     st.write("Valores faltantes por columna:")
     st.write(faltantes)
-    df["Nota"].fillna(df["Nota"].mean(), inplace=True)
-    df["Edad"].fillna(df["Edad"].median(), inplace=True)
-    st.success("✅ Valores faltantes reemplazados por promedio o mediana")
+
+    # Reemplazar todos los valores faltantes automáticamente
+    for col in df.columns:
+        if df[col].dtype in ["float64", "int64"]:
+            df[col].fillna(df[col].mean(), inplace=True)
+        else:
+            df[col].fillna("Desconocido", inplace=True)
+
+    st.success("✅ Todos los valores faltantes han sido reemplazados automáticamente")
     st.dataframe(df)
 
     # 4️⃣ Tabla dinámica
