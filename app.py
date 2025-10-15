@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 # ============================
-# 🎨 ESTILO MODERNO PROFESIONAL WEB
+# 🎨 ESTILO MODERNO WEB PREMIUM
 # ============================
 st.markdown("""
 <style>
@@ -12,8 +12,8 @@ body {
     background: linear-gradient(135deg, #e0f7fa 0%, #e3f2fd 100%);
     font-family: 'Poppins', sans-serif;
     color: #2b2b2b;
-    padding: 0;
     margin: 0;
+    padding: 0;
 }
 
 /* Sidebar */
@@ -38,7 +38,8 @@ body {
 
 /* Botones premium animados */
 .sidebar-button {
-    background: linear-gradient(135deg, #ff6a00, #ee0979);
+    background: linear-gradient(270deg, #ff6a00, #ee0979, #42a5f5, #1e88e5);
+    background-size: 600% 600%;
     color: white !important;
     font-weight: 700;
     border-radius: 16px;
@@ -56,14 +57,14 @@ body {
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
-    animation: colorShift 5s infinite alternate;
+    animation: colorShift 8s ease infinite;
 }
 
-/* Cambio dinámico de colores gradiente */
+/* Gradiente animado */
 @keyframes colorShift {
-    0% { background: linear-gradient(135deg, #ff6a00, #ee0979); }
-    50% { background: linear-gradient(135deg, #42a5f5, #1e88e5); }
-    100% { background: linear-gradient(135deg, #ffb347, #ffcc33); }
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 /* Glow animado */
@@ -88,10 +89,27 @@ body {
     100% { transform: scale(0.8); opacity: 0.3; }
 }
 
-/* Efecto “levitación” al pasar el mouse */
+/* Efecto “levitación” al hover */
 .sidebar-button:hover {
-    transform: translateY(-5px) scale(1.08);
-    box-shadow: 0 12px 35px rgba(0,0,0,0.45);
+    transform: translateY(-6px) scale(1.1);
+    box-shadow: 0 16px 50px rgba(255,105,180,0.6), 0 8px 20px rgba(0,0,0,0.25);
+}
+
+/* Ripple effect al click */
+.sidebar-button:active::after {
+    content: "";
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: ripple 0.6s linear;
+}
+@keyframes ripple {
+    to { transform: translate(-50%, -50%) scale(4); opacity: 0; }
 }
 
 /* Botón activo */
@@ -100,33 +118,7 @@ body {
     color: #1b1b1b !important;
     font-weight: 800;
     box-shadow: 0 14px 40px rgba(0,0,0,0.5);
-    transform: scale(1.1);
-}
-
-
-
-
-
-/* DataFrames y tablas */
-.stDataFrame table {
-    border-collapse: collapse;
-    width: 100%;
-}
-.stDataFrame th, .stDataFrame td {
-    padding: 0.5rem 0.8rem;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-.stDataFrame tr:hover {
-    background-color: #f1f1f1;
-}
-
-/* Metrics */
-.stMetric {
-    border-radius: 12px;
-    background: #ffffff;
-    padding: 1rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transform: scale(1.12);
 }
 
 /* Footer */
@@ -150,7 +142,6 @@ st.sidebar.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Lista de opciones con emojis
 menu_options = [
     ("📈 Ejercicio 1", "Ejercicio 1"),
     ("🎲 Ejercicio 2", "Ejercicio 2"),
@@ -168,6 +159,7 @@ for display, option in menu_options:
     button_html = f'<button class="sidebar-button {"active" if st.session_state.menu==option else ""}">{display}</button>'
     if st.sidebar.button(display, key=option):
         st.session_state.menu = option
+
 
 menu = st.session_state.menu
 
