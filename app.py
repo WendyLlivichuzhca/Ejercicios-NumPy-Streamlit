@@ -167,7 +167,7 @@ for display, option in menu_options:
     st.sidebar.markdown(button_html, unsafe_allow_html=True)
 
 # Capturar la opción seleccionada
-menu = st.query_params.get("menu", [st.session_state.menu])[0]
+menu = st.experimental_get_query_params().get("menu", [st.session_state.menu])[0]
 st.session_state.menu = menu
 
 # ============================
@@ -269,11 +269,3 @@ elif menu == "Ejercicios Pandas":
     st.dataframe(merged)
 
 # ============================
-# FOOTER
-# ============================
-st.markdown("""
-<div class="footer">
-    Desarrollado con ❤️ por <b>Wendy Llivichuzhca</b><br>
-    Instituto Universitario Tecnológico del Azuay — Octubre 2025
-</div>
-""", unsafe_allow_html=True)
