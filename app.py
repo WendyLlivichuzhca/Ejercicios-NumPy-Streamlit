@@ -36,34 +36,38 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 
-/* Sidebar buttons */
+/* Sidebar buttons llamativos */
 .sidebar-button {
-    background: linear-gradient(135deg, #42a5f5, #26c6da);
+    background: linear-gradient(135deg, #ff6a00, #ee0979); /* gradiente brillante */
     color: white !important;
-    font-weight: 600;
-    border-radius: 12px;
+    font-weight: 700;
+    border-radius: 16px;
     border: none;
-    padding: 0.8rem 1rem;
+    padding: 1rem 1.2rem;
     width: 100%;
     text-align: left;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin: 0.5rem 0;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    transition: transform 0.2s, background 0.3s;
+    gap: 0.8rem;
+    margin: 0.7rem 0;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
     cursor: pointer;
+    font-size: 1.1rem;
 }
 .sidebar-button:hover {
-    transform: scale(1.05);
-    background: linear-gradient(135deg, #26c6da, #42a5f5);
+    transform: scale(1.08) rotate(-1deg);
+    background: linear-gradient(135deg, #ee0979, #ff6a00);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
 }
 .sidebar-button.active {
-    background: linear-gradient(135deg, #ff8a65, #ff7043) !important;
-    color: white !important;
-    font-weight: 700;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    background: linear-gradient(135deg, #ffd700, #ff8c00) !important;
+    color: #1b1b1b !important;
+    font-weight: 800;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+    transform: scale(1.1);
 }
+
 
 /* DataFrames y tablas */
 .stDataFrame table {
