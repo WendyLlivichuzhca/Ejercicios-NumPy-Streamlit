@@ -3,12 +3,12 @@ import numpy as np
 import pandas as pd
 
 # ============================
-# 🎨 ESTILO MODERNO
+# 🎨 ESTILO MODERNO PROFESIONAL
 # ============================
 st.markdown("""
 <style>
 body {
-    background: linear-gradient(135deg, #e3f2fd 0%, #e0f7fa 100%);
+    background: linear-gradient(135deg, #e0f7fa 0%, #e3f2fd 100%);
     font-family: 'Poppins', sans-serif;
     color: #2b2b2b;
 }
@@ -61,7 +61,7 @@ body {
 """, unsafe_allow_html=True)
 
 # ============================
-# SIDEBAR
+# 🧭 SIDEBAR
 # ============================
 st.sidebar.markdown("""
 <div class="sidebar-title">
@@ -124,28 +124,23 @@ elif menu == "Ejercicio 4":
     normalizado = (v - np.mean(v)) / np.std(v)
     st.write("Vector normalizado:", normalizado)
 
+# ============================
+# 🎓 ESTUDIANTES
+# ============================
 elif menu == "Estudiantes":
     st.subheader("🎓 Gestión de Estudiantes del Ciclo")
-    data = {
-        "Nombres": ["Wendy", "Erick", "Sebastián", "Kenny", "Adriana", "Edwin"] + [""] * 12,
-        "Apellidos": ["Llivichuzhca", "Torres", "Pérez", "Mora", "Rojas", "Vera"] + [""] * 12,
-        "Edad": [22, 23, 21, 22, 23, 24] + [""] * 12,
-        "Materia": ["IA", "Big Data", "Redes", "Desarrollo", "Bases", "Programación"] + [""] * 12,
-        "Nota": [9.5, 8.7, 9.0, 8.9, 9.3, 8.5] + [""] * 12
-    }
-    df = pd.DataFrame(data)
-    df_edit = st.data_editor(df, num_rows="dynamic", use_container_width=True)
+    data = pd.read_csv("estudiantes.csv")
+    df_edit = st.data_editor(data, num_rows="dynamic", use_container_width=True)
     csv = df_edit.to_csv(index=False).encode("utf-8")
-    st.download_button("📥 Descargar CSV", csv, "estudiantes.csv", "text/csv")
+    st.download_button("📥 Descargar CSV", csv, "estudiantes_actualizado.csv", "text/csv")
 
 # ============================
-# 🧩 EJERCICIOS PANDAS
+# 🐼 EJERCICIOS PANDAS
 # ============================
 elif menu == "Ejercicios Pandas":
     st.subheader("🐼 Ejercicios con Pandas")
-
     st.markdown("""
-    **Ejercicio 1:** Carga un CSV propio (o exporta el DataFrame anterior)  
+    **Ejercicio 1:** Carga un CSV propio  
     **Ejercicio 2:** Calcula la venta total por producto  
     **Ejercicio 3:** Imputa valores faltantes  
     **Ejercicio 4:** Crea una tabla dinámica por mes y producto  
@@ -153,10 +148,7 @@ elif menu == "Ejercicios Pandas":
     """)
 
     st.markdown("---")
-
-    # 1️⃣ Cargar CSV
-    st.subheader("📂 1. Cargar o generar un DataFrame")
-    uploaded_file = st.file_uploader("Sube tu archivo CSV", type=["csv"])
+    uploaded_file = st.file_uploader("📂 Sube tu archivo CSV", type=["csv"])
 
     if uploaded_file is not None:
         df = pd.read_csv(uploaded_file)
@@ -171,22 +163,22 @@ elif menu == "Ejercicios Pandas":
 
     st.dataframe(df.head(10))
 
-    # 2️⃣ Ventas totales
-    st.subheader("💰 2. Venta total por producto (de mayor a menor)")
-    venta_total = df.groupby("Producto")["Ventas"].sum().sort_values(ascending=False)
-    st.bar_chart(venta_total)
+    if "Producto" in df.columns and "Ventas" in df.columns:
+        st.subheader("💰 2. Venta total por producto")
+        venta_total = df.groupby("Producto")["Ventas"].sum().sort_values(ascending=False)
+        st.bar_chart(venta_total)
+    else:
+        st.warning("⚠️ El archivo no contiene columnas 'Producto' y 'Ventas'")
 
-    # 3️⃣ Imputación de valores faltantes
     st.subheader("🧠 3. Imputación de valores faltantes")
     df["Ventas"].fillna(df["Ventas"].median(), inplace=True)
     st.dataframe(df)
 
-    # 4️⃣ Tabla dinámica
-    st.subheader("📆 4. Tabla dinámica de ventas por mes y producto")
-    pivot = df.pivot_table(values="Ventas", index="Mes", columns="Producto", aggfunc="sum")
-    st.dataframe(pivot)
+    st.subheader("📆 4. Tabla dinámica por mes y producto")
+    if "Mes" in df.columns:
+        pivot = df.pivot_table(values="Ventas", index="Mes", columns="Producto", aggfunc="sum")
+        st.dataframe(pivot)
 
-    # 5️⃣ Merge de DataFrames
     st.subheader("🔗 5. Merge entre dos DataFrames")
     productos = pd.DataFrame({
         "Producto": ["A", "B", "C"],
@@ -200,7 +192,7 @@ elif menu == "Ejercicios Pandas":
 # ============================
 st.markdown("""
 <div class="footer">
-    Desarrollado con ❤️ por <b>Wendy Llivichuzhca</b>  
+    Desarrollado con ❤️ por <b>Wendy Llivichuzhca</b><br>
     Instituto Universitario Tecnológico del Azuay — Octubre 2025
 </div>
 """, unsafe_allow_html=True)
