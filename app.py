@@ -1,220 +1,166 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import io
 
-# ==========================
-# 🎨 ESTILO PERSONALIZADO
-# ==========================
-st.set_page_config(page_title="Ejercicios NumPy + Pandas", page_icon="📊", layout="wide")
-
+# ============================
+# 🎨 ESTILO MODERNO
+# ============================
 st.markdown("""
 <style>
+/* Fondo general */
 body {
-    background: linear-gradient(135deg, #f0f4f8, #e0f7fa);
-    color: #333;
+    background: linear-gradient(135deg, #e3f2fd 0%, #e0f7fa 100%);
     font-family: 'Poppins', sans-serif;
+    color: #2b2b2b;
 }
-header {
-    text-align: center;
-    padding: 20px 0;
-}
-h1, h2, h3 {
-    color: #00796b;
-    text-align: center;
-}
-section {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
-}
-button, .stDownloadButton>button {
-    background: linear-gradient(135deg, #00bfa5, #00796b);
+
+/* Sidebar título */
+.sidebar-title {
+    background: linear-gradient(135deg, #0288d1, #26c6da);
     color: white;
-    border-radius: 10px;
-    border: none;
-    padding: 8px 20px;
-    transition: 0.3s ease-in-out;
-}
-button:hover {
-    transform: scale(1.05);
-    background: linear-gradient(135deg, #00796b, #004d40);
-}
-footer {
+    padding: 1rem 1.2rem;
+    border-radius: 16px;
     text-align: center;
-    padding: 15px;
-    font-size: 12px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+/* Botones del sidebar */
+.sidebar-button {
+    background: linear-gradient(135deg, #42a5f5, #26c6da);
+    color: white !important;
+    font-weight: 600;
+    border-radius: 12px;
+    border: none;
+    padding: 0.8rem 1rem;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    transition: transform 0.2s, background 0.3s;
+}
+.sidebar-button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #26c6da, #42a5f5);
+}
+
+/* Botón activo */
+.sidebar-button.active {
+    background: linear-gradient(135deg, #ff8a65, #ff7043) !important;
+    color: white !important;
+    font-weight: 700;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    font-size: 0.9rem;
     color: #555;
-    margin-top: 20px;
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #ddd;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# ==========================
-# 🧭 NAVEGACIÓN
-# ==========================
-st.title("📊 Aplicación Interactiva NumPy + Pandas")
-st.markdown("### Desarrollado por: **Wendy Llivichuzhca** 💚")
+# ============================
+# SIDEBAR CON TÍTULO
+# ============================
+st.sidebar.markdown("""
+<div class="sidebar-title">
+📊 Tarea 4: NumPy + Streamlit Profesional
+</div>
+""", unsafe_allow_html=True)
 
-menu = st.sidebar.radio("Selecciona una sección:", ["Ejercicios NumPy", "Ejercicios Pandas", "Gestión de Estudiantes"])
+# ============================
+# MENÚ BOTONES SIDEBAR
+# ============================
+menu_options = ["Ejercicio 1", "Ejercicio 2", "Ejercicio 3", "Ejercicio 4", "Estudiantes"]
 
-# ==========================
-# 🔹 EJERCICIOS NUMPY
-# ==========================
-if menu == "Ejercicios NumPy":
-    st.header("🧮 Ejercicios con NumPy")
-    opcion = st.selectbox("Selecciona un ejercicio:", ["Ejercicio 1", "Ejercicio 2", "Ejercicio 3", "Ejercicio 4"])
+if "menu" not in st.session_state:
+    st.session_state.menu = "Ejercicio 1"
 
-    if opcion == "Ejercicio 1":
-        st.subheader("Array del 1 al 100 y medidas estadísticas")
-        arr = np.arange(1, 101)
-        st.write("📈 Array:", arr)
-        st.metric("Media", f"{np.mean(arr):.2f}")
-        st.metric("Mediana", f"{np.median(arr):.2f}")
-        st.metric("Varianza", f"{np.var(arr):.2f}")
-        st.metric("Percentil 90", f"{np.percentile(arr, 90):.2f}")
+for option in menu_options:
+    is_active = st.session_state.menu == option
+    class_name = "sidebar-button active" if is_active else "sidebar-button"
+    
+    # Renderizamos el botón con HTML para mantener el estilo
+    button_html = f'<button class="{class_name}">{option}</button>'
+    
+    # Usamos el contenedor de st.sidebar para capturar el clic
+    if st.sidebar.button(option, key=option):
+        st.session_state.menu = option
 
-    elif opcion == "Ejercicio 2":
-        st.subheader("Matriz Aleatoria 5x5 (Normal estándar)")
-        mat = np.random.randn(5, 5)
-        st.dataframe(pd.DataFrame(mat))
-        st.success(f"Determinante: {np.linalg.det(mat):.4f}")
-        st.info(f"Traza: {np.trace(mat):.4f}")
+# ============================
+# CONTENIDO DE LOS EJERCICIOS
+# ============================
+menu = st.session_state.menu  # ⚠️ usar session_state
 
-    elif opcion == "Ejercicio 3":
-        st.subheader("Distribución de Frecuencias")
-        nums = np.random.randint(0, 11, 1000)
-        valores, frec = np.unique(nums, return_counts=True)
-        df = pd.DataFrame({'Número': valores, 'Frecuencia': frec})
-        st.dataframe(df)
-        st.bar_chart(df.set_index("Número"))
+if menu == "Ejercicio 1":
+    st.subheader("📈 Ejercicio 1: Estadísticas básicas con NumPy")
+    arr = np.arange(1, 101)
+    st.write("Array:", arr)
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Media", round(np.mean(arr), 2))
+    col2.metric("Mediana", round(np.median(arr), 2))
+    col3.metric("Varianza", round(np.var(arr), 2))
+    col4.metric("Percentil 90", round(np.percentile(arr, 90), 2))
 
-    elif opcion == "Ejercicio 4":
-        st.subheader("Normalización de un Vector")
-        tipo = st.radio("Selecciona modo de entrada:", ["Manual", "Aleatorio"])
-        if tipo == "Manual":
-            entrada = st.text_input("Ingrese los valores separados por coma (ej: 2,4,6,8):")
-            if entrada:
-                v = np.array([float(x) for x in entrada.split(",")])
-        else:
-            v = np.random.randint(1, 100, 10)
-            st.write("Vector generado:", v)
-        if 'v' in locals():
-            normalizado = (v - np.mean(v)) / np.std(v)
-            st.write("✅ Vector normalizado:", normalizado)
+elif menu == "Ejercicio 2":
+    st.subheader("🎲 Ejercicio 2: Matriz aleatoria 5x5")
+    matriz = np.random.randn(5, 5)
+    st.dataframe(pd.DataFrame(matriz))
+    col1, col2 = st.columns(2)
+    col1.success(f"Determinante: {np.linalg.det(matriz):.3f}")
+    col2.info(f"Traza: {np.trace(matriz):.3f}")
 
-# ==========================
-# 🧩 EJERCICIOS PANDAS
-# ==========================
-elif menu == "Ejercicios Pandas":
-    st.header("🐼 Ejercicios con Pandas")
+elif menu == "Ejercicio 3":
+    st.subheader("📊 Ejercicio 3: Distribución de frecuencias")
+    data = np.random.randint(0, 11, 1000)
+    values, counts = np.unique(data, return_counts=True)
+    freq_df = pd.DataFrame({'Número': values, 'Frecuencia': counts})
+    st.dataframe(freq_df)
+    st.bar_chart(freq_df.set_index('Número'))
 
-    ejercicio = st.selectbox("Selecciona un ejercicio:", [
-        "1️⃣ Cargar CSV y mostrar primeras 10 filas",
-        "2️⃣ Venta total por producto",
-        "3️⃣ Valores faltantes e imputación",
-        "4️⃣ Tabla dinámica (ventas por mes y producto)",
-        "5️⃣ Merge entre DataFrames"
-    ])
+elif menu == "Ejercicio 4":
+    st.subheader("⚙️ Ejercicio 4: Normalización de un vector")
+    opcion = st.radio("Selecciona una opción:", ["Ingresar manualmente", "Generar aleatoriamente"])
+    if opcion == "Ingresar manualmente":
+        user_input = st.text_input("Introduce los valores separados por comas:", "10, 20, 30, 40, 50")
+        v = np.array([float(x) for x in user_input.split(",")])
+    else:
+        v = np.random.randint(1, 100, 5)
+        st.write("Vector generado:", v)
+    normalizado = (v - np.mean(v)) / np.std(v)
+    st.write("Vector normalizado:", normalizado)
 
-    if ejercicio == "1️⃣ Cargar CSV y mostrar primeras 10 filas":
-        archivo = st.file_uploader("Sube un archivo CSV", type="csv")
-        if archivo:
-            df = pd.read_csv(archivo)
-            st.success("Archivo cargado correctamente ✅")
-            st.dataframe(df.head(10))
-        else:
-            st.info("📂 Sube un archivo para iniciar el análisis.")
-
-    elif ejercicio == "2️⃣ Venta total por producto":
-        st.write("Generando datos de ejemplo...")
-        df = pd.DataFrame({
-            'producto': ['A', 'B', 'C', 'A', 'B', 'C'],
-            'ventas': [100, 200, 150, 130, 220, 180]
-        })
-        st.dataframe(df)
-        ventas_totales = df.groupby('producto')['ventas'].sum().sort_values(ascending=False)
-        st.subheader("📊 Ventas Totales por Producto")
-        st.dataframe(ventas_totales)
-        st.bar_chart(ventas_totales)
-
-    elif ejercicio == "3️⃣ Valores faltantes e imputación":
-        df = pd.DataFrame({
-            'Producto': ['A', 'B', 'C', 'D'],
-            'Precio': [10, np.nan, 15, np.nan],
-            'Ventas': [200, 150, np.nan, 180]
-        })
-        st.write("Datos originales:")
-        st.dataframe(df)
-        metodo = st.radio("Método de imputación:", ["Media", "Mediana", "Moda"])
-        for col in df.select_dtypes(include=[np.number]).columns:
-            if metodo == "Media":
-                df[col].fillna(df[col].mean(), inplace=True)
-            elif metodo == "Mediana":
-                df[col].fillna(df[col].median(), inplace=True)
-            else:
-                df[col].fillna(df[col].mode()[0], inplace=True)
-        st.success("✅ Datos imputados:")
-        st.dataframe(df)
-
-    elif ejercicio == "4️⃣ Tabla dinámica (ventas por mes y producto)":
-        df = pd.DataFrame({
-            'Producto': ['A', 'B', 'A', 'C', 'B', 'C'],
-            'Mes': ['Enero', 'Enero', 'Febrero', 'Febrero', 'Marzo', 'Marzo'],
-            'Ventas': [120, 150, 180, 200, 170, 210]
-        })
-        st.write("Datos base:")
-        st.dataframe(df)
-        tabla = pd.pivot_table(df, values='Ventas', index='Producto', columns='Mes', aggfunc='sum')
-        st.subheader("📈 Tabla dinámica:")
-        st.dataframe(tabla)
-
-    elif ejercicio == "5️⃣ Merge entre DataFrames":
-        productos = pd.DataFrame({
-            'id': [1, 2, 3],
-            'producto': ['A', 'B', 'C']
-        })
-        ventas = pd.DataFrame({
-            'id': [1, 2, 3],
-            'ventas': [100, 200, 150]
-        })
-        st.write("Productos:")
-        st.dataframe(productos)
-        st.write("Ventas:")
-        st.dataframe(ventas)
-        merged = pd.merge(productos, ventas, on='id')
-        st.success("✅ Resultado del Merge:")
-        st.dataframe(merged)
-
-# ==========================
-# 👥 GESTIÓN DE ESTUDIANTES
-# ==========================
-elif menu == "Gestión de Estudiantes":
-    st.header("🎓 Gestión de Estudiantes del Ciclo")
-    st.markdown("Puedes editar los datos y descargar el archivo CSV.")
-
+else:
+    st.subheader("🎓 Gestión de Estudiantes del Ciclo")
+    st.write("Administra el registro de estudiantes y exporta los datos a CSV.")
     data = {
-        "Nombres": ["Erick", "Edwin", "Adriana", "Kenny", "Maura", "Stalyn"] + [""] * 12,
-        "Apellidos": ["Chacón", "Choez", "Cornejo", "Valdivieso", "Calle", "Pesantez"] + [""] * 12,
-        "Edad": [21, 22, 21, 23, 22, 21] + [""] * 12,
-        "Materias": ["IA", "Bases de Datos", "Redes", "Programación", "Análisis", "Diseño"] + [""] * 12,
-        "Notas": [18, 16, 19, 17, 20, 15] + [""] * 12
+        "Nombres": ["Wendy", "Erick", "Sebastián", "Kenny", "Adriana", "Edwin"] + [""] * 12,
+        "Apellidos": ["Llivichuzhca", "Torres", "Pérez", "Mora", "Rojas", "Vera"] + [""] * 12,
+        "Edad": [22, 23, 21, 22, 23, 24] + [""] * 12,
+        "Materia": ["IA", "Big Data", "Redes", "Desarrollo", "Bases", "Programación"] + [""] * 12,
+        "Nota": [9.5, 8.7, 9.0, 8.9, 9.3, 8.5] + [""] * 12
     }
-
     df = pd.DataFrame(data)
-    df_edit = st.data_editor(df, num_rows="dynamic")
+    df_edit = st.data_editor(df, num_rows="dynamic", use_container_width=True)
+    csv = df_edit.to_csv(index=False).encode("utf-8")
+    st.download_button("📥 Descargar CSV", csv, "estudiantes.csv", "text/csv")
 
-    csv = df_edit.to_csv(index=False).encode('utf-8')
-    st.download_button("📥 Descargar CSV", data=csv, file_name="estudiantes.csv", mime="text/csv")
-
-# ==========================
-# 📍 FOOTER
-# ==========================
+# ============================
+# FOOTER
+# ============================
 st.markdown("""
-<footer>
-Desarrollado por <b>Wendy Llivichuzhca</b> · Instituto Universitario Tecnológico del Azuay 🏫<br>
-Curso: <i>Inteligencia Artificial</i> · Docente: Ing. Jessica Pinos
-</footer>
+<div class="footer">
+    Desarrollado con ❤️ por <b>Wendy Llivichuzhca</b>  
+    Instituto Universitario Tecnológico del Azuay — Octubre 2025
+</div>
 """, unsafe_allow_html=True)
