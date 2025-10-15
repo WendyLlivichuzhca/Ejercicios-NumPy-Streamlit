@@ -159,19 +159,8 @@ elif menu == "Ejercicios Pandas":
 
     # 1️⃣ Cargar CSV directamente desde el proyecto
     st.subheader("📂 1. Cargar DataFrame de estudiantes")
-    try:
-        df = pd.read_csv("estudiantes.csv")
-        st.success("✅ Archivo cargado correctamente desde el proyecto")
-    except FileNotFoundError:
-        st.warning("❌ No se encontró 'estudiantes.csv'. Usando datos de ejemplo.")
-        df = pd.DataFrame({
-            "Nombres": ["Wendy", "Erick", "Sebastián", "Kenny", "Adriana", "Edwin"],
-            "Apellidos": ["Llivichuzhca", "Torres", "Pérez", "Mora", "Rojas", "Vera"],
-            "Edad": [22, 23, 21, 22, 23, 24],
-            "Materia": ["IA", "Big Data", "Redes", "Desarrollo", "Bases", "Programación"],
-            "Nota": [9.5, 8.7, 9.0, 8.9, 9.3, 8.5]
-        })
-
+    df = pd.read_csv("estudiantes.csv")
+    st.success("✅ Archivo cargado correctamente desde el proyecto")
     st.dataframe(df.head(10))
 
     # 2️⃣ Promedio de notas por materia
@@ -209,6 +198,7 @@ elif menu == "Ejercicios Pandas":
     })
     merged = pd.merge(df, tutores, on="Materia", how="left")
     st.dataframe(merged)
+
 
 
 # ============================
