@@ -7,14 +7,11 @@ import pandas as pd
 # ============================
 st.markdown("""
 <style>
-/* Fondo general */
 body {
     background: linear-gradient(135deg, #e3f2fd 0%, #e0f7fa 100%);
     font-family: 'Poppins', sans-serif;
     color: #2b2b2b;
 }
-
-/* Sidebar título */
 .sidebar-title {
     background: linear-gradient(135deg, #0288d1, #26c6da);
     color: white;
@@ -26,8 +23,6 @@ body {
     margin-bottom: 1rem;
     box-shadow: 0 6px 20px rgba(0,0,0,0.2);
 }
-
-/* Botones del sidebar */
 .sidebar-button {
     background: linear-gradient(135deg, #42a5f5, #26c6da);
     color: white !important;
@@ -48,16 +43,12 @@ body {
     transform: scale(1.05);
     background: linear-gradient(135deg, #26c6da, #42a5f5);
 }
-
-/* Botón activo */
 .sidebar-button.active {
     background: linear-gradient(135deg, #ff8a65, #ff7043) !important;
     color: white !important;
     font-weight: 700;
     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
 }
-
-/* Footer */
 .footer {
     text-align: center;
     font-size: 0.9rem;
@@ -70,38 +61,31 @@ body {
 """, unsafe_allow_html=True)
 
 # ============================
-# SIDEBAR CON TÍTULO
+# SIDEBAR
 # ============================
 st.sidebar.markdown("""
 <div class="sidebar-title">
-📊 Tarea 4: NumPy + Streamlit Profesional
+📊 Tarea 4: NumPy + Pandas + Streamlit
 </div>
 """, unsafe_allow_html=True)
 
-# ============================
-# MENÚ BOTONES SIDEBAR
-# ============================
-menu_options = ["Ejercicio 1", "Ejercicio 2", "Ejercicio 3", "Ejercicio 4", "Estudiantes"]
+menu_options = [
+    "Ejercicio 1", "Ejercicio 2", "Ejercicio 3", "Ejercicio 4",
+    "Estudiantes", "Ejercicios Pandas"
+]
 
 if "menu" not in st.session_state:
     st.session_state.menu = "Ejercicio 1"
 
 for option in menu_options:
-    is_active = st.session_state.menu == option
-    class_name = "sidebar-button active" if is_active else "sidebar-button"
-    
-    # Renderizamos el botón con HTML para mantener el estilo
-    button_html = f'<button class="{class_name}">{option}</button>'
-    
-    # Usamos el contenedor de st.sidebar para capturar el clic
     if st.sidebar.button(option, key=option):
         st.session_state.menu = option
 
-# ============================
-# CONTENIDO DE LOS EJERCICIOS
-# ============================
-menu = st.session_state.menu  # ⚠️ usar session_state
+menu = st.session_state.menu
 
+# ============================
+# 🧮 EJERCICIOS NUMPY
+# ============================
 if menu == "Ejercicio 1":
     st.subheader("📈 Ejercicio 1: Estadísticas básicas con NumPy")
     arr = np.arange(1, 101)
@@ -140,9 +124,8 @@ elif menu == "Ejercicio 4":
     normalizado = (v - np.mean(v)) / np.std(v)
     st.write("Vector normalizado:", normalizado)
 
-else:
+elif menu == "Estudiantes":
     st.subheader("🎓 Gestión de Estudiantes del Ciclo")
-    st.write("Administra el registro de estudiantes y exporta los datos a CSV.")
     data = {
         "Nombres": ["Wendy", "Erick", "Sebastián", "Kenny", "Adriana", "Edwin"] + [""] * 12,
         "Apellidos": ["Llivichuzhca", "Torres", "Pérez", "Mora", "Rojas", "Vera"] + [""] * 12,
@@ -154,6 +137,63 @@ else:
     df_edit = st.data_editor(df, num_rows="dynamic", use_container_width=True)
     csv = df_edit.to_csv(index=False).encode("utf-8")
     st.download_button("📥 Descargar CSV", csv, "estudiantes.csv", "text/csv")
+
+# ============================
+# 🧩 EJERCICIOS PANDAS
+# ============================
+elif menu == "Ejercicios Pandas":
+    st.subheader("🐼 Ejercicios con Pandas")
+
+    st.markdown("""
+    **Ejercicio 1:** Carga un CSV propio (o exporta el DataFrame anterior)  
+    **Ejercicio 2:** Calcula la venta total por producto  
+    **Ejercicio 3:** Imputa valores faltantes  
+    **Ejercicio 4:** Crea una tabla dinámica por mes y producto  
+    **Ejercicio 5:** Realiza un merge entre dos DataFrames  
+    """)
+
+    st.markdown("---")
+
+    # 1️⃣ Cargar CSV
+    st.subheader("📂 1. Cargar o generar un DataFrame")
+    uploaded_file = st.file_uploader("Sube tu archivo CSV", type=["csv"])
+
+    if uploaded_file is not None:
+        df = pd.read_csv(uploaded_file)
+        st.success("✅ Archivo cargado correctamente")
+    else:
+        st.info("Usando datos de ejemplo...")
+        df = pd.DataFrame({
+            "Producto": ["A", "B", "C", "A", "B", "C"],
+            "Ventas": [200, 150, np.nan, 300, 250, 400],
+            "Mes": ["Enero", "Enero", "Enero", "Febrero", "Febrero", "Febrero"]
+        })
+
+    st.dataframe(df.head(10))
+
+    # 2️⃣ Ventas totales
+    st.subheader("💰 2. Venta total por producto (de mayor a menor)")
+    venta_total = df.groupby("Producto")["Ventas"].sum().sort_values(ascending=False)
+    st.bar_chart(venta_total)
+
+    # 3️⃣ Imputación de valores faltantes
+    st.subheader("🧠 3. Imputación de valores faltantes")
+    df["Ventas"].fillna(df["Ventas"].median(), inplace=True)
+    st.dataframe(df)
+
+    # 4️⃣ Tabla dinámica
+    st.subheader("📆 4. Tabla dinámica de ventas por mes y producto")
+    pivot = df.pivot_table(values="Ventas", index="Mes", columns="Producto", aggfunc="sum")
+    st.dataframe(pivot)
+
+    # 5️⃣ Merge de DataFrames
+    st.subheader("🔗 5. Merge entre dos DataFrames")
+    productos = pd.DataFrame({
+        "Producto": ["A", "B", "C"],
+        "Categoria": ["Electrónica", "Ropa", "Alimentos"]
+    })
+    merged = pd.merge(df, productos, on="Producto", how="left")
+    st.dataframe(merged)
 
 # ============================
 # FOOTER
