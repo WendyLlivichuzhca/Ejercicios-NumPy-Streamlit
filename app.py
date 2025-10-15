@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 # ============================
-# 🎨 ESTILO MODERNO PROFESIONAL UNIFICADO
+# 🎨 ESTILO MODERNO PROFESIONAL WEB
 # ============================
 st.markdown("""
 <style>
@@ -12,6 +12,8 @@ body {
     background: linear-gradient(135deg, #e0f7fa 0%, #e3f2fd 100%);
     font-family: 'Poppins', sans-serif;
     color: #2b2b2b;
+    padding: 0;
+    margin: 0;
 }
 
 /* Sidebar */
@@ -120,7 +122,6 @@ for option in menu_options:
 
 menu = st.session_state.menu
 
-
 # ============================
 # 🧮 EJERCICIOS NUMPY
 # ============================
@@ -227,8 +228,6 @@ elif menu == "Ejercicios Pandas":
     merged = pd.merge(df, tutores, on="Materia", how="left")
     st.dataframe(merged)
 
-
-
 # ============================
 # FOOTER
 # ============================
@@ -238,5 +237,3 @@ st.markdown("""
     Instituto Universitario Tecnológico del Azuay — Octubre 2025
 </div>
 """, unsafe_allow_html=True)
-
-
