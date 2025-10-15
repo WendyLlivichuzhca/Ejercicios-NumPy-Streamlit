@@ -138,54 +138,67 @@ elif menu == "Estudiantes":
 # 🐼 EJERCICIOS PANDAS
 # ============================
 elif menu == "Ejercicios Pandas":
-    st.subheader("🐼 Ejercicios con Pandas")
+    st.subheader("🐼 Ejercicios con Pandas (usando datos de estudiantes)")
+
     st.markdown("""
-    **Ejercicio 1:** Carga un CSV propio  
-    **Ejercicio 2:** Calcula la venta total por producto  
-    **Ejercicio 3:** Imputa valores faltantes  
-    **Ejercicio 4:** Crea una tabla dinámica por mes y producto  
-    **Ejercicio 5:** Realiza un merge entre dos DataFrames  
+    **Ejercicio 1:** Carga el archivo `estudiantes.csv`  
+    **Ejercicio 2:** Calcula el promedio de notas por materia  
+    **Ejercicio 3:** Identifica y completa valores faltantes  
+    **Ejercicio 4:** Crea una tabla dinámica con edad promedio y nota por materia  
+    **Ejercicio 5:** Realiza un merge entre dos DataFrames (por ejemplo, estudiantes y tutores)
     """)
 
     st.markdown("---")
-    uploaded_file = st.file_uploader("📂 Sube tu archivo CSV", type=["csv"])
+
+    # 1️⃣ Cargar CSV
+    st.subheader("📂 1. Cargar o generar DataFrame de estudiantes")
+    uploaded_file = st.file_uploader("Sube tu archivo CSV de estudiantes", type=["csv"])
 
     if uploaded_file is not None:
         df = pd.read_csv(uploaded_file)
         st.success("✅ Archivo cargado correctamente")
     else:
-        st.info("Usando datos de ejemplo...")
+        st.info("Usando datos de ejemplo de estudiantes...")
         df = pd.DataFrame({
-            "Producto": ["A", "B", "C", "A", "B", "C"],
-            "Ventas": [200, 150, np.nan, 300, 250, 400],
-            "Mes": ["Enero", "Enero", "Enero", "Febrero", "Febrero", "Febrero"]
+            "Nombres": ["Wendy", "Erick", "Sebastián", "Kenny", "Adriana", "Edwin"],
+            "Apellidos": ["Llivichuzhca", "Torres", "Pérez", "Mora", "Rojas", "Vera"],
+            "Edad": [22, 23, 21, 22, 23, 24],
+            "Materia": ["IA", "Big Data", "Redes", "Desarrollo", "Bases", "Programación"],
+            "Nota": [9.5, 8.7, 9.0, 8.9, 9.3, 8.5]
         })
 
     st.dataframe(df.head(10))
 
-    if "Producto" in df.columns and "Ventas" in df.columns:
-        st.subheader("💰 2. Venta total por producto")
-        venta_total = df.groupby("Producto")["Ventas"].sum().sort_values(ascending=False)
-        st.bar_chart(venta_total)
-    else:
-        st.warning("⚠️ El archivo no contiene columnas 'Producto' y 'Ventas'")
+    # 2️⃣ Promedio de notas por materia
+    st.subheader("📊 2. Promedio de notas por materia")
+    promedio_materia = df.groupby("Materia")["Nota"].mean().sort_values(ascending=False)
+    st.bar_chart(promedio_materia)
+    st.dataframe(promedio_materia)
 
+    # 3️⃣ Manejo de valores faltantes
     st.subheader("🧠 3. Imputación de valores faltantes")
-    df["Ventas"].fillna(df["Ventas"].median(), inplace=True)
+    faltantes = df.isnull().sum()
+    st.write("Valores faltantes por columna:")
+    st.write(faltantes)
+    df["Nota"].fillna(df["Nota"].mean(), inplace=True)
+    df["Edad"].fillna(df["Edad"].median(), inplace=True)
+    st.success("✅ Valores faltantes reemplazados por promedio o mediana")
     st.dataframe(df)
 
-    st.subheader("📆 4. Tabla dinámica por mes y producto")
-    if "Mes" in df.columns:
-        pivot = df.pivot_table(values="Ventas", index="Mes", columns="Producto", aggfunc="sum")
-        st.dataframe(pivot)
+    # 4️⃣ Tabla dinámica
+    st.subheader("📅 4. Tabla dinámica: Edad y Nota promedio por materia")
+    pivot = df.pivot_table(values=["Edad", "Nota"], index="Materia", aggfunc="mean")
+    st.dataframe(pivot)
 
-    st.subheader("🔗 5. Merge entre dos DataFrames")
-    productos = pd.DataFrame({
-        "Producto": ["A", "B", "C"],
-        "Categoria": ["Electrónica", "Ropa", "Alimentos"]
+    # 5️⃣ Merge de DataFrames
+    st.subheader("🔗 5. Merge entre DataFrames (Ejemplo)")
+    tutores = pd.DataFrame({
+        "Materia": ["IA", "Big Data", "Redes", "Desarrollo", "Bases", "Programación"],
+        "Tutor": ["Carlos", "María", "José", "Ana", "Luis", "Sofía"]
     })
-    merged = pd.merge(df, productos, on="Producto", how="left")
+    merged = pd.merge(df, tutores, on="Materia", how="left")
     st.dataframe(merged)
+
 
 # ============================
 # FOOTER
