@@ -129,12 +129,19 @@ elif menu == "Ejercicio 4":
 # ============================
 elif menu == "Estudiantes":
     st.subheader("🎓 Gestión de Estudiantes del Ciclo")
-    data = pd.read_csv("estudiantes.csv")
-    df_edit = st.data_editor(data, num_rows="dynamic", use_container_width=True)
+    data = {
+        "Nombres": ["Wendy", "Erick", "Sebastián", "Kenny", "Adriana", "Edwin"] + [""] * 12,
+        "Apellidos": ["Llivichuzhca", "Torres", "Pérez", "Mora", "Rojas", "Vera"] + [""] * 12,
+        "Edad": [22, 23, 21, 22, 23, 24] + [""] * 12,
+        "Materia": ["IA", "Big Data", "Redes", "Desarrollo", "Bases", "Programación"] + [""] * 12,
+        "Nota": [9.5, 8.7, 9.0, 8.9, 9.3, 8.5] + [""] * 12
+    }
+    df = pd.DataFrame(data)
+    df_edit = st.data_editor(df, num_rows="dynamic", use_container_width=True)
     csv = df_edit.to_csv(index=False).encode("utf-8")
-    st.download_button("📥 Descargar CSV", csv, "estudiantes_actualizado.csv", "text/csv")
+    st.download_button("📥 Descargar CSV", csv, "estudiantes.csv", "text/csv")
 
-# ============================
+    # ============================
 # 🐼 EJERCICIOS PANDAS
 # ============================
 elif menu == "Ejercicios Pandas":
@@ -209,3 +216,5 @@ st.markdown("""
     Instituto Universitario Tecnológico del Azuay — Octubre 2025
 </div>
 """, unsafe_allow_html=True)
+
+
