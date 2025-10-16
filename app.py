@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
 
+
 # ============================
 # 🎨 ESTILO MODERNO WEB PREMIUM
 # ============================
@@ -391,10 +392,17 @@ elif categoria == "Plotly":
         st.plotly_chart(fig_area_export, use_container_width=True, key="area_exportar")
 
         if st.button("📥 Generar archivo HTML"):
+            import os
             with st.spinner("⏳ Generando archivo..."):
-                fig_area_export.write_html("grafico_plotly.html", include_plotlyjs="cdn")
-            st.success("✅ Figura exportada correctamente a 'grafico_plotly.html'. Ábrela en tu navegador para interactuar")
+                # Crear carpeta "exportados" si no existe
+                output_dir = os.path.join(os.getcwd(), "exportados")
+                os.makedirs(output_dir, exist_ok=True)
 
+                # Guardar el archivo HTML dentro de "exportados"
+                html_path = os.path.join(output_dir, "grafico_plotly.html")
+                fig_area_export.write_html(html_path, include_plotlyjs="cdn")
+            
+            st.success(f"✅ Figura exportada correctamente en: {html_path}\nAbre el archivo en tu navegador para interactuar")
 # ============================
 # FOOTER
 # ============================
