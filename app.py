@@ -151,6 +151,8 @@ menu_options = [
     ("⚙️ Ejercicio 4", "Ejercicio 4"),
     ("🎓 Estudiantes", "Estudiantes"),
     ("🐼 Ejercicios Pandas", "Ejercicios Pandas")
+        ("🐼 Ejercicios Matplolib", "Ejercicios Matplotlib")
+
 ]
 
 if "menu" not in st.session_state:
