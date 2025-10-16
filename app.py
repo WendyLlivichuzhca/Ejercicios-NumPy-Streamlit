@@ -188,7 +188,7 @@ if categoria == "NumPy":
 # ============================
 elif categoria == "Pandas":
     st.sidebar.markdown("### 🧩 Ejercicios (Pandas)")
-    menu_pandas = st.sidebar.selectbox("Selecciona un ejercicio", ["Cargar csv", "Promedio de notas", "Valores Faltantes","Tabla dinamica", "Merge de dataframes", "Ejercicios Matplotlib"])
+    menu_pandas = st.sidebar.selectbox("Selecciona un ejercicio", ["Cargar csv", "Promedio de notas", "Valores Faltantes","Tabla dinamica", "Merge de dataframes"])
 
     try:
         df = pd.read_csv("estudiantes.csv")
