@@ -302,7 +302,7 @@ elif categoria == "Matplotlib":
 # ============================
 # EJERCICIOS PLOTLY
 # ============================
-elif categoria == "Ploty":
+elif categoria == "Plotly":  # Corregí el typo "Ploty" -> "Plotly"
     st.sidebar.markdown("### 🧩 Ejercicios (Plotly)")
     menu_plotly = st.sidebar.selectbox("Selecciona un ejercicio", [
         "Área apilada por categoría", 
@@ -310,12 +310,23 @@ elif categoria == "Ploty":
         "Exportar figura a HTML"
     ])
 
-    # Datos de ejemplo
-    df_plotly = pd.DataFrame({
-        "Fecha": pd.date_range("2025-01-01", periods=12, freq="M"),
+    # ----------------------------
+    # Datos base para gráficos
+    # ----------------------------
+    fechas = pd.date_range("2025-01-01", periods=12, freq="M")
+    categorias = ["Categoría A", "Categoría B", "Categoría C"]
+    
+    # DataFrame para área apilada
+    df_area_base = pd.DataFrame({
+        "Fecha": fechas,
         "Categoría A": np.random.randint(10, 50, 12),
         "Categoría B": np.random.randint(5, 30, 12),
-        "Categoría C": np.random.randint(15, 40, 12),
+        "Categoría C": np.random.randint(15, 40, 12)
+    })
+
+    # DataFrame para treemap
+    df_treemap_base = pd.DataFrame({
+        "Categoría": ["A","B","C"] * 4,
         "Producto": ["Producto 1","Producto 2","Producto 3"] * 4,
         "Valor": np.random.randint(20, 100, 12)
     })
@@ -325,9 +336,9 @@ elif categoria == "Ploty":
     # ----------------------------
     if menu_plotly == "Área apilada por categoría":
         st.subheader("📊 Gráfico de áreas apiladas")
-        df_area = df_plotly.melt(
+        df_area = df_area_base.melt(
             id_vars=["Fecha"], 
-            value_vars=["Categoría A", "Categoría B", "Categoría C"],
+            value_vars=categorias,
             var_name="Categoría", 
             value_name="Valor"
         )
@@ -345,14 +356,8 @@ elif categoria == "Ploty":
     # ----------------------------
     elif menu_plotly == "Treemap de categoría y producto":
         st.subheader("🌍 Treemap de Categorías y Productos")
-        # Creamos un DataFrame en formato largo adecuado
-        df_treemap = pd.DataFrame({
-            "Categoría": ["A","B","C"] * 4,
-            "Producto": ["Producto 1","Producto 2","Producto 3"] * 4,
-            "Valor": np.random.randint(20, 100, 12)
-        })
         fig = px.treemap(
-            df_treemap,
+            df_treemap_base,
             path=["Categoría", "Producto"],
             values="Valor",
             title="Treemap de Categorías y Productos"
@@ -364,9 +369,9 @@ elif categoria == "Ploty":
     # ----------------------------
     elif menu_plotly == "Exportar figura a HTML":
         st.subheader("💾 Exportar figura a HTML")
-        df_area = df_plotly.melt(
+        df_area = df_area_base.melt(
             id_vars=["Fecha"], 
-            value_vars=["Categoría A", "Categoría B", "Categoría C"],
+            value_vars=categorias,
             var_name="Categoría", 
             value_name="Valor"
         )
@@ -377,10 +382,8 @@ elif categoria == "Ploty":
             color="Categoría",
             title="Área apilada por categoría"
         )
-        # Guardar archivo HTML en la carpeta del proyecto
         fig.write_html("grafico_plotly.html", include_plotlyjs="cdn")
         st.success("✅ Figura exportada a 'grafico_plotly.html'. Ábrela en tu navegador para interactuar")
-
 
 # ============================
 # FOOTER
