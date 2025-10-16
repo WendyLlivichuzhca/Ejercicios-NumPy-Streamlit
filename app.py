@@ -136,7 +136,7 @@ body {
 """, unsafe_allow_html=True)
 
 # ============================
-# 🧭 SIDEBAR
+# 🧭 SIDEBAr
 # ============================
 st.sidebar.markdown("""
 <div class="sidebar-title">
@@ -151,7 +151,7 @@ menu_options = [
     ("⚙️ Ejercicio 4", "Ejercicio 4"),
     ("🎓 Estudiantes", "Estudiantes"),
     ("🐼 Ejercicios Pandas", "Ejercicios Pandas")
-        ("🐼 Ejercicios Matplolib", "Ejercicios Matplotlib")
+    ("🐼 Ejercicios Matplolib", "Ejercicios Matplotlib")
 
 ]
 
