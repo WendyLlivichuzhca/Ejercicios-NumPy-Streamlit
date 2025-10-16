@@ -4,7 +4,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
 
-
 # ============================
 # 🎨 ESTILO MODERNO WEB PREMIUM
 # ============================
@@ -311,19 +310,15 @@ elif categoria == "Plotly":
         "Exportar figura a HTML"
     ])
 
-    # ----------------------------
-    # Datos base mejorados
-    # ----------------------------
+    # Datos base
     fechas = pd.date_range("2025-01-01", periods=12, freq="M")
     categorias_area = ["Electrónica", "Ropa", "Alimentos", "Hogar", "Deportes"]
 
-    # Área apilada: valores más variados
     df_area_base = pd.DataFrame({
         "Fecha": fechas,
         **{cat: np.random.randint(50, 500, 12) for cat in categorias_area}
     })
 
-    # Treemap: categorías y productos más realistas
     productos_dict = {
         "Electrónica": ["Laptop", "Tablet", "Smartphone", "Auriculares"],
         "Ropa": ["Camisas", "Pantalones", "Zapatos", "Sombreros"],
@@ -338,77 +333,47 @@ elif categoria == "Plotly":
         for prod in productos_dict[cat]
     ])
 
-    # ----------------------------
-    # Área apilada por categoría
-    # ----------------------------
+    # Área apilada
     if menu_plotly == "Área apilada por categoría":
         st.subheader("📊 Gráfico de áreas apiladas")
-        df_area = df_area_base.melt(
-            id_vars=["Fecha"], 
-            value_vars=categorias_area,
-            var_name="Categoría", 
-            value_name="Valor"
-        )
-        fig_area = px.area(
-            df_area, 
-            x="Fecha", 
-            y="Valor", 
-            color="Categoría",
-            title="Área apilada por categoría"
-        )
+        df_area = df_area_base.melt(id_vars=["Fecha"], value_vars=categorias_area,
+                                    var_name="Categoría", value_name="Valor")
+        fig_area = px.area(df_area, x="Fecha", y="Valor", color="Categoría",
+                           title="Área apilada por categoría")
         st.plotly_chart(fig_area, key="area_apilada")
 
-    # ----------------------------
-    # Treemap de categoría y producto
-    # ----------------------------
+    # Treemap
     elif menu_plotly == "Treemap de categoría y producto":
         st.subheader("🌍 Treemap de Categorías y Productos")
-        fig_treemap = px.treemap(
-            df_treemap_base,
-            path=["Categoría", "Producto"],
-            values="Valor",
-            title="Treemap de Categorías y Productos"
-        )
+        fig_treemap = px.treemap(df_treemap_base, path=["Categoría", "Producto"],
+                                  values="Valor", title="Treemap de Categorías y Productos")
         st.plotly_chart(fig_treemap, key="treemap")
 
-    # ----------------------------
-    # Exportar figura a HTML
-    # ----------------------------
+    # Exportar HTML
     elif menu_plotly == "Exportar figura a HTML":
         st.subheader("💾 Exportar figura a HTML")
-        df_area = df_area_base.melt(
-            id_vars=["Fecha"], 
-            value_vars=categorias_area,
-            var_name="Categoría", 
-            value_name="Valor"
-        )
-        fig_area_export = px.area(
-            df_area, 
-            x="Fecha", 
-            y="Valor", 
-            color="Categoría",
-            title="Área apilada por categoría"
-        )
+        df_area = df_area_base.melt(id_vars=["Fecha"], value_vars=categorias_area,
+                                    var_name="Categoría", value_name="Valor")
+        fig_area_export = px.area(df_area, x="Fecha", y="Valor", color="Categoría",
+                                  title="Área apilada por categoría")
         st.plotly_chart(fig_area_export, use_container_width=True, key="area_exportar")
 
         if st.button("📥 Generar archivo HTML"):
-            import os
-            with st.spinner("⏳ Generando archivo..."):
-                # Crear carpeta "exportados" si no existe
-                output_dir = os.path.join(os.getcwd(), "exportados")
-                os.makedirs(output_dir, exist_ok=True)
+            html_bytes = fig_area_export.to_html(include_plotlyjs="cdn").encode("utf-8")
+            st.download_button(
+                label="⬇️ Descargar HTML",
+                data=html_bytes,
+                file_name="grafico_plotly.html",
+                mime="text/html"
+            )
+            st.success("✅ Archivo listo para descargar directamente desde la app")
 
-                # Guardar el archivo HTML dentro de "exportados"
-                html_path = os.path.join(output_dir, "grafico_plotly.html")
-                fig_area_export.write_html(html_path, include_plotlyjs="cdn")
-            
-            st.success(f"✅ Figura exportada correctamente en: {html_path}\nAbre el archivo en tu navegador para interactuar")
 # ============================
 # FOOTER
 # ============================
 st.markdown("""
 <div class="footer">
     Desarrollado con ❤️ por <b>Wendy Llivichuzhca</b><br>
-    Instituto Universitario Tecnológico del Azuay — Octubre 2025
+    Streamlit + Python 2025
 </div>
 """, unsafe_allow_html=True)
