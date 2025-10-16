@@ -123,7 +123,7 @@ st.sidebar.markdown("""
 """, unsafe_allow_html=True)
 
 # Menú principal de categorías
-categoria = st.sidebar.selectbox("Selecciona categoría", ["NumPy", "Pandas", "Matplotlib", "Ploty"])
+categoria = st.sidebar.selectbox("Selecciona categoría", ["NumPy", "Pandas", "Matplotlib", "Plotly"])
 
 # ============================
 # EJERCICIOS NUMPY
