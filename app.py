@@ -302,7 +302,7 @@ elif categoria == "Matplotlib":
 # ============================
 # EJERCICIOS PLOTLY
 # ============================
-elif categoria == "Plotly":  # Corregí el typo "Ploty" -> "Plotly"
+elif categoria == "Plotly":
     st.sidebar.markdown("### 🧩 Ejercicios (Plotly)")
     menu_plotly = st.sidebar.selectbox("Selecciona un ejercicio", [
         "Área apilada por categoría", 
@@ -342,60 +342,53 @@ elif categoria == "Plotly":  # Corregí el typo "Ploty" -> "Plotly"
             var_name="Categoría", 
             value_name="Valor"
         )
-        fig = px.area(
+        fig_area = px.area(
             df_area, 
             x="Fecha", 
             y="Valor", 
             color="Categoría",
             title="Área apilada por categoría"
         )
-        st.plotly_chart(fig)
+        st.plotly_chart(fig_area, key="area_apilada")  # ✅ Key único
 
     # ----------------------------
     # Treemap de categoría y producto
     # ----------------------------
     elif menu_plotly == "Treemap de categoría y producto":
         st.subheader("🌍 Treemap de Categorías y Productos")
-        fig = px.treemap(
+        fig_treemap = px.treemap(
             df_treemap_base,
             path=["Categoría", "Producto"],
             values="Valor",
             title="Treemap de Categorías y Productos"
         )
-        st.plotly_chart(fig)
+        st.plotly_chart(fig_treemap, key="treemap")  # ✅ Key único
 
-# ----------------------------
-# Exportar figura a HTML con botón
-# ----------------------------
+    # ----------------------------
+    # Exportar figura a HTML
+    # ----------------------------
     elif menu_plotly == "Exportar figura a HTML":
         st.subheader("💾 Exportar figura a HTML")
 
-    # Preparar DataFrame a partir de df_area_base
-    df_area = df_area_base.melt(
-        id_vars=["Fecha"], 
-        value_vars=categorias,
-        var_name="Categoría", 
-        value_name="Valor"
-    )
+        df_area = df_area_base.melt(
+            id_vars=["Fecha"], 
+            value_vars=categorias,
+            var_name="Categoría", 
+            value_name="Valor"
+        )
+        fig_area_export = px.area(
+            df_area, 
+            x="Fecha", 
+            y="Valor", 
+            color="Categoría",
+            title="Área apilada por categoría"
+        )
+        st.plotly_chart(fig_area_export, use_container_width=True, key="area_exportar")  # ✅ Key diferente
 
-    # Crear gráfico
-    fig_area = px.area(
-        df_area, 
-        x="Fecha", 
-        y="Valor", 
-        color="Categoría",
-        title="Área apilada por categoría"
-    )
-
-    # Mostrar gráfico
-    st.plotly_chart(fig_area, use_container_width=True)
-
-    # Botón para exportar
-    if st.button("📥 Generar archivo HTML"):
-        with st.spinner("⏳ Generando archivo..."):
-            fig_area.write_html("grafico_plotly.html", include_plotlyjs="cdn")
-        st.success("✅ Figura exportada correctamente a 'grafico_plotly.html'. Ábrela en tu navegador para interactuar")
-
+        if st.button("📥 Generar archivo HTML"):
+            with st.spinner("⏳ Generando archivo..."):
+                fig_area_export.write_html("grafico_plotly.html", include_plotlyjs="cdn")
+            st.success("✅ Figura exportada correctamente a 'grafico_plotly.html'. Ábrela en tu navegador para interactuar")
 
 # ============================
 # FOOTER
