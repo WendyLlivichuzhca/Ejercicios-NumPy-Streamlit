@@ -1,6 +1,8 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+
 
 # ============================
 # 🎨 ESTILO MODERNO WEB PREMIUM
@@ -268,6 +270,79 @@ elif menu == "Ejercicios Pandas":
     })
     merged = pd.merge(df, tutores, on="Materia", how="left")
     st.dataframe(merged)
+
+elif menu == "Ejercicios Matplotlib":
+    st.subheader("📈 Ejercicios con Matplotlib (Datos de Estudiantes)")
+
+
+    uploaded_file = st.file_uploader("Sube tu archivo CSV de estudiantes", type=["csv"])
+
+    if uploaded_file is not None:
+        df = pd.read_csv(uploaded_file)
+        st.success("✅ Archivo cargado correctamente")
+    else:
+        st.info("Usando datos de ejemplo...")
+        df = pd.DataFrame({
+            "Nombres": ["Wendy", "Erick", "Sebastián", "Kenny", "Adriana", "Edwin"],
+            "Materia": ["IA", "Big Data", "Redes", "Desarrollo", "Bases", "Programación"],
+            "Nota": [9.5, 8.7, 9.0, 8.9, 9.3, 8.5],
+            "Edad": [22, 23, 21, 22, 23, 24]
+        })
+
+    st.dataframe(df)
+
+    # =============================
+    # 1️⃣ Gráfico de líneas: evolución de notas
+    # =============================
+    st.subheader("📈 1. Evolución del promedio de notas (líneas)")
+    promedio_por_estudiante = df.groupby("Nombres")["Nota"].mean()
+    fig, ax = plt.subplots()
+    ax.plot(promedio_por_estudiante.index, promedio_por_estudiante.values, marker='o')
+    ax.set_title("Evolución del Promedio de Notas por Estudiante")
+    ax.set_xlabel("Estudiante")
+    ax.set_ylabel("Promedio de Nota")
+    plt.xticks(rotation=45)
+    st.pyplot(fig)
+
+    # =============================
+    # 2️⃣ Gráfico de barras: materias con mejor promedio
+    # =============================
+    st.subheader("📊 2. Top 5 materias con mejor promedio")
+    promedio_materia = df.groupby("Materia")["Nota"].mean().sort_values(ascending=False).head(5)
+    fig, ax = plt.subplots()
+    ax.bar(promedio_materia.index, promedio_materia.values)
+    ax.set_title("Top 5 Materias con Mejor Promedio")
+    ax.set_xlabel("Materia")
+    ax.set_ylabel("Promedio de Nota")
+    plt.xticks(rotation=30)
+    st.pyplot(fig)
+
+    # =============================
+    # 3️⃣ Boxplot de notas por materia
+    # =============================
+    st.subheader("📦 3. Boxplot de Notas por Materia")
+    materias = df["Materia"].unique()
+    data_box = [df[df["Materia"] == m]["Nota"].values for m in materias]
+    fig, ax = plt.subplots()
+    ax.boxplot(data_box, labels=materias)
+    ax.set_title("Distribución de Notas por Materia")
+    ax.set_xlabel("Materia")
+    ax.set_ylabel("Nota")
+    st.pyplot(fig)
+
+    # =============================
+    # 4️⃣ Histograma de notas
+    # =============================
+    st.subheader("📊 4. Histograma de distribución de notas")
+    fig, ax = plt.subplots()
+    ax.hist(df["Nota"], bins=10, edgecolor='black')
+    ax.set_title("Distribución de Notas de Estudiantes")
+    ax.set_xlabel("Nota")
+    ax.set_ylabel("Frecuencia")
+    st.pyplot(fig)
+
+    st.success("✅ Ejercicios completados con datos de estudiantes")
+
 
 # ============================
 # FOOTER
