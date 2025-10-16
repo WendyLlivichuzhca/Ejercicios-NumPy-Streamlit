@@ -320,6 +320,9 @@ elif categoria == "Ploty":
         "Valor": np.random.randint(20, 100, 12)
     })
 
+    # ----------------------------
+    # Área apilada por categoría
+    # ----------------------------
     if menu_plotly == "Área apilada por categoría":
         st.subheader("📊 Gráfico de áreas apiladas")
         df_area = df_plotly.melt(
@@ -328,18 +331,26 @@ elif categoria == "Ploty":
             var_name="Categoría", 
             value_name="Valor"
         )
-        fig = px.area(df_area, x="Fecha", y="Valor", color="Categoría",
-                      title="Área apilada por categoría")
+        fig = px.area(
+            df_area, 
+            x="Fecha", 
+            y="Valor", 
+            color="Categoría",
+            title="Área apilada por categoría"
+        )
         st.plotly_chart(fig)
 
+    # ----------------------------
+    # Treemap de categoría y producto
+    # ----------------------------
     elif menu_plotly == "Treemap de categoría y producto":
         st.subheader("🌍 Treemap de Categorías y Productos")
-        df_treemap = df_plotly.melt(
-            id_vars=["Producto"], 
-            value_vars=["Categoría A", "Categoría B", "Categoría C"],
-            var_name="Categoría", 
-            value_name="Valor"
-        )
+        # Creamos un DataFrame en formato largo adecuado
+        df_treemap = pd.DataFrame({
+            "Categoría": ["A","B","C"] * 4,
+            "Producto": ["Producto 1","Producto 2","Producto 3"] * 4,
+            "Valor": np.random.randint(20, 100, 12)
+        })
         fig = px.treemap(
             df_treemap,
             path=["Categoría", "Producto"],
@@ -348,6 +359,9 @@ elif categoria == "Ploty":
         )
         st.plotly_chart(fig)
 
+    # ----------------------------
+    # Exportar figura a HTML
+    # ----------------------------
     elif menu_plotly == "Exportar figura a HTML":
         st.subheader("💾 Exportar figura a HTML")
         df_area = df_plotly.melt(
@@ -356,10 +370,17 @@ elif categoria == "Ploty":
             var_name="Categoría", 
             value_name="Valor"
         )
-        fig = px.area(df_area, x="Fecha", y="Valor", color="Categoría",
-                      title="Área apilada por categoría")
+        fig = px.area(
+            df_area, 
+            x="Fecha", 
+            y="Valor", 
+            color="Categoría",
+            title="Área apilada por categoría"
+        )
+        # Guardar archivo HTML en la carpeta del proyecto
         fig.write_html("grafico_plotly.html", include_plotlyjs="cdn")
         st.success("✅ Figura exportada a 'grafico_plotly.html'. Ábrela en tu navegador para interactuar")
+
 
 # ============================
 # FOOTER
