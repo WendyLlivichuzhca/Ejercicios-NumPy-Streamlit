@@ -151,7 +151,7 @@ st.sidebar.markdown("""
 """, unsafe_allow_html=True)
 
 # Selección de menú
-menu = st.sidebar.selectbox("Selecciona un ejercicio", ["Ejercicio 1", "Ejercicio 2", "Ejercicio 3", "Ejercicio 4"])
+menu = st.sidebar.selectbox("Selecciona un ejercicio", ["Ejercicio 1", "Ejercicio 2", "Ejercicio 3", "Ejercicio 4","Estudiantes"])
 if menu == "Ejercicio 1":
     st.subheader("📈 Ejercicio 1: Estadísticas básicas con NumPy")
     arr = np.arange(1, 101)
@@ -190,9 +190,6 @@ elif menu == "Ejercicio 4":
     normalizado = (v - np.mean(v)) / np.std(v)
     st.write("Vector normalizado:", normalizado)
 
-# ============================
-# 🎓 ESTUDIANTES
-# ============================
 elif menu == "Estudiantes":
     st.subheader("🎓 Gestión de Estudiantes del Ciclo")
     data = {
@@ -207,46 +204,52 @@ elif menu == "Estudiantes":
     csv = df_edit.to_csv(index=False).encode("utf-8")
     st.download_button("📥 Descargar CSV", csv, "estudiantes.csv", "text/csv")
 
-# ============================
-# 🐼 EJERCICIOS PANDAS
-# ============================
-elif menu == "Ejercicios Pandas":
-    st.subheader("🐼 Ejercicios con Pandas (usando datos de estudiantes)")
 
-    # 1️⃣ Cargar CSV directamente desde el proyecto
+
+# Subtítulo general para todos los ejercicios
+st.sidebar.markdown("""
+### 🧩 Ejercicios (Pandas)
+""", unsafe_allow_html=True)
+
+# Selección de menú
+menu = st.sidebar.selectbox("Selecciona un ejercicio", [
+    "Cargar csv", "Promedio de notas", "Valores Faltantes",
+    "Tabla dinamica", "Merge de dataframes", "Ejercicios Matplotlib"
+])
+if menu == "Cargar csv":
     st.subheader("📂 1. Cargar DataFrame de estudiantes")
-    df = pd.read_csv("estudiantes.csv")
-    st.success("✅ Archivo cargado correctamente desde el proyecto")
-    st.dataframe(df.head(10))
+    try:
+        df = pd.read_csv("estudiantes.csv")
+        st.success("✅ Archivo cargado correctamente desde el proyecto")
+        st.dataframe(df.head(10))
+    except FileNotFoundError:
+        st.error("❌ No se encontró el archivo 'estudiantes.csv'. Por favor verifica la ruta o súbelo manualmente.")
 
-    # 2️⃣ Promedio de notas por materia
+elif menu == "Promedio de notas":
     st.subheader("📊 2. Promedio de notas por materia")
     promedio_materia = df.groupby("Materia")["Nota"].mean().sort_values(ascending=False)
     st.bar_chart(promedio_materia)
     st.dataframe(promedio_materia)
 
-    # 3️⃣ Manejo de valores faltantes (generalizado)
+elif menu == "Valores Faltantes":
     st.subheader("🧠 3. Imputación de valores faltantes")
     faltantes = df.isnull().sum()
     st.write("Valores faltantes por columna:")
     st.write(faltantes)
-
-    # Reemplazar todos los valores faltantes automáticamente
     for col in df.columns:
         if df[col].dtype in ["float64", "int64"]:
             df[col].fillna(df[col].mean(), inplace=True)
         else:
             df[col].fillna("Desconocido", inplace=True)
-
     st.success("✅ Todos los valores faltantes han sido reemplazados automáticamente")
     st.dataframe(df)
 
-    # 4️⃣ Tabla dinámica
+elif menu == "Tabla dinamica":
     st.subheader("📅 4. Tabla dinámica: Edad y Nota promedio por materia")
     pivot = df.pivot_table(values=["Edad", "Nota"], index="Materia", aggfunc="mean")
     st.dataframe(pivot)
 
-    # 5️⃣ Merge de DataFrames
+elif menu == "Merge de dataframes":
     st.subheader("🔗 5. Merge entre DataFrames (Ejemplo)")
     tutores = pd.DataFrame({
         "Materia": ["IA", "Big Data", "Redes", "Desarrollo", "Bases", "Programación"],
@@ -257,10 +260,7 @@ elif menu == "Ejercicios Pandas":
 
 elif menu == "Ejercicios Matplotlib":
     st.subheader("📈 Ejercicios con Matplotlib (Datos de Estudiantes)")
-
-
     uploaded_file = st.file_uploader("Sube tu archivo CSV de estudiantes", type=["csv"])
-
     if uploaded_file is not None:
         df = pd.read_csv(uploaded_file)
         st.success("✅ Archivo cargado correctamente")
@@ -272,12 +272,19 @@ elif menu == "Ejercicios Matplotlib":
             "Nota": [9.5, 8.7, 9.0, 8.9, 9.3, 8.5],
             "Edad": [22, 23, 21, 22, 23, 24]
         })
-
     st.dataframe(df)
 
-    # =============================
-    # 1️⃣ Gráfico de líneas: evolución de notas
-    # =============================
+# Subtítulo general para todos los ejercicios
+st.sidebar.markdown("""
+###  🧩Ejercicios (Matplotlib)
+""", unsafe_allow_html=True)
+
+# Selección de menú
+menu = st.sidebar.selectbox("Selecciona un ejercicio", [
+    "Grafico de lineas", "Grafico de barras", "Boxplot de notas por materia",
+    "Histograma de notas"
+])
+if menu == "Grafico de lineas":
     st.subheader("📈 1. Evolución del promedio de notas (líneas)")
     promedio_por_estudiante = df.groupby("Nombres")["Nota"].mean()
     fig, ax = plt.subplots()
@@ -288,9 +295,7 @@ elif menu == "Ejercicios Matplotlib":
     plt.xticks(rotation=45)
     st.pyplot(fig)
 
-    # =============================
-    # 2️⃣ Gráfico de barras: materias con mejor promedio
-    # =============================
+elif menu == "Grafico de barras":
     st.subheader("📊 2. Top 5 materias con mejor promedio")
     promedio_materia = df.groupby("Materia")["Nota"].mean().sort_values(ascending=False).head(5)
     fig, ax = plt.subplots()
@@ -301,9 +306,7 @@ elif menu == "Ejercicios Matplotlib":
     plt.xticks(rotation=30)
     st.pyplot(fig)
 
-    # =============================
-    # 3️⃣ Boxplot de notas por materia
-    # =============================
+elif menu == "Boxplot de notas por materia":
     st.subheader("📦 3. Boxplot de Notas por Materia")
     materias = df["Materia"].unique()
     data_box = [df[df["Materia"] == m]["Nota"].values for m in materias]
@@ -314,9 +317,7 @@ elif menu == "Ejercicios Matplotlib":
     ax.set_ylabel("Nota")
     st.pyplot(fig)
 
-    # =============================
-    # 4️⃣ Histograma de notas
-    # =============================
+elif menu == "Histograma de notas":
     st.subheader("📊 4. Histograma de distribución de notas")
     fig, ax = plt.subplots()
     ax.hist(df["Nota"], bins=10, edgecolor='black')
