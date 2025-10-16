@@ -17,39 +17,14 @@ body {
     padding: 0;
 }
 
-/* Sidebar botones */
-.sidebar-button {
-    background: linear-gradient(270deg, #ff6a00, #ee0979, #42a5f5, #1e88e5);
-    background-size: 600% 600%;
-    color: white !important;
-    font-weight: 700;
-    border-radius: 16px;
-    border: none;
+/* Sidebar */
+.sidebar .sidebar-content {
+    background: #ffffff;
     padding: 1rem;
-    width: 100%;
-    margin: 0.5rem 0;
-    cursor: pointer;
-    font-size: 1.05rem;
-    transition: all 0.3s ease;
-    animation: colorShift 8s ease infinite;
-    text-align: left;
-    position: relative;
-    overflow: hidden;
-}
-.sidebar-button:hover {
-    transform: translateY(-4px) scale(1.05);
-}
-.sidebar-button.active {
-    background: linear-gradient(135deg, #ffd700, #ff8c00) !important;
-    color: #1b1b1b !important;
-}
-@keyframes colorShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
 }
 
-/* Sidebar título */
 .sidebar-title {
     background: linear-gradient(135deg, #0288d1, #26c6da);
     color: white;
@@ -60,6 +35,46 @@ body {
     font-weight: 700;
     margin-bottom: 1rem;
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+/* Botones premium animados */
+.sidebar-button {
+    background: linear-gradient(270deg, #ff6a00, #ee0979, #42a5f5, #1e88e5);
+    background-size: 600% 600%;
+    color: white !important;
+    font-weight: 700;
+    border-radius: 16px;
+    border: none;
+    padding: 1rem 1.2rem;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 0.7rem 0;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+    cursor: pointer;
+    font-size: 1.1rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    animation: colorShift 8s ease infinite;
+}
+
+/* Gradiente animado */
+@keyframes colorShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Botón activo */
+.sidebar-button.active {
+    background: linear-gradient(135deg, #ffd700, #ff8c00) !important;
+    color: #1b1b1b !important;
+    font-weight: 800;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.5);
+    transform: scale(1.05);
 }
 
 /* Footer */
@@ -75,7 +90,7 @@ body {
 """, unsafe_allow_html=True)
 
 # ============================
-# SIDEBAR
+# 🧭 SIDEBAR
 # ============================
 st.sidebar.markdown("""
 <div class="sidebar-title">
@@ -83,27 +98,49 @@ st.sidebar.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ============================
-# FUNCIONES DE BOTONES
-# ============================
-def create_sidebar_buttons(title, options, key_prefix):
-    st.sidebar.markdown(f"### {title}")
-    if f"{key_prefix}_selected" not in st.session_state:
-        st.session_state[f"{key_prefix}_selected"] = options[0]
-    
-    for opt in options:
-        if st.sidebar.button(opt, key=f"{key_prefix}_{opt}"):
-            st.session_state[f"{key_prefix}_selected"] = opt
-    
-    return st.session_state[f"{key_prefix}_selected"]
+# ====== CATEGORIAS ======
+st.sidebar.markdown("### 📚 Ejercicios NumPy")
+if st.sidebar.button("Ejercicio 1: Estadísticas básicas"):
+    st.session_state["ejercicio_numpy"] = 1
+if st.sidebar.button("Ejercicio 2: Matriz aleatoria"):
+    st.session_state["ejercicio_numpy"] = 2
+if st.sidebar.button("Ejercicio 3: Distribución de frecuencias"):
+    st.session_state["ejercicio_numpy"] = 3
+if st.sidebar.button("Ejercicio 4: Normalización vector"):
+    st.session_state["ejercicio_numpy"] = 4
+if st.sidebar.button("Gestión de Estudiantes"):
+    st.session_state["ejercicio_numpy"] = 5
+
+st.sidebar.markdown("### 🧩 Ejercicios Pandas")
+if st.sidebar.button("Cargar CSV"):
+    st.session_state["ejercicio_pandas"] = 1
+if st.sidebar.button("Promedio de notas"):
+    st.session_state["ejercicio_pandas"] = 2
+if st.sidebar.button("Valores faltantes"):
+    st.session_state["ejercicio_pandas"] = 3
+if st.sidebar.button("Tabla dinámica"):
+    st.session_state["ejercicio_pandas"] = 4
+if st.sidebar.button("Merge de dataframes"):
+    st.session_state["ejercicio_pandas"] = 5
+if st.sidebar.button("Ejercicios Matplotlib"):
+    st.session_state["ejercicio_pandas"] = 6
+
+st.sidebar.markdown("### 🧩 Ejercicios Matplotlib")
+if st.sidebar.button("Gráfico de líneas"):
+    st.session_state["ejercicio_plot"] = 1
+if st.sidebar.button("Gráfico de barras"):
+    st.session_state["ejercicio_plot"] = 2
+if st.sidebar.button("Boxplot de notas"):
+    st.session_state["ejercicio_plot"] = 3
+if st.sidebar.button("Histograma de notas"):
+    st.session_state["ejercicio_plot"] = 4
 
 # ============================
-# EJERCICIOS NUMPY
+# FUNCIONES DE CADA EJERCICIO
 # ============================
-numpy_options = ["Ejercicio 1", "Ejercicio 2", "Ejercicio 3", "Ejercicio 4", "Estudiantes"]
-selected_numpy = create_sidebar_buttons("📚 Ejercicios (NumPy)", numpy_options, "numpy")
-
-if selected_numpy == "Ejercicio 1":
+# ================= NumPy =================
+ej = st.session_state.get("ejercicio_numpy", 0)
+if ej == 1:
     st.subheader("📈 Ejercicio 1: Estadísticas básicas con NumPy")
     arr = np.arange(1, 101)
     st.write("Array:", arr)
@@ -113,7 +150,7 @@ if selected_numpy == "Ejercicio 1":
     col3.metric("Varianza", round(np.var(arr), 2))
     col4.metric("Percentil 90", round(np.percentile(arr, 90), 2))
 
-elif selected_numpy == "Ejercicio 2":
+elif ej == 2:
     st.subheader("🎲 Ejercicio 2: Matriz aleatoria 5x5")
     matriz = np.random.randn(5, 5)
     st.dataframe(pd.DataFrame(matriz))
@@ -121,7 +158,7 @@ elif selected_numpy == "Ejercicio 2":
     col1.success(f"Determinante: {np.linalg.det(matriz):.3f}")
     col2.info(f"Traza: {np.trace(matriz):.3f}")
 
-elif selected_numpy == "Ejercicio 3":
+elif ej == 3:
     st.subheader("📊 Ejercicio 3: Distribución de frecuencias")
     data = np.random.randint(0, 11, 1000)
     values, counts = np.unique(data, return_counts=True)
@@ -129,7 +166,7 @@ elif selected_numpy == "Ejercicio 3":
     st.dataframe(freq_df)
     st.bar_chart(freq_df.set_index('Número'))
 
-elif selected_numpy == "Ejercicio 4":
+elif ej == 4:
     st.subheader("⚙️ Ejercicio 4: Normalización de un vector")
     opcion = st.radio("Selecciona una opción:", ["Ingresar manualmente", "Generar aleatoriamente"])
     if opcion == "Ingresar manualmente":
@@ -141,7 +178,7 @@ elif selected_numpy == "Ejercicio 4":
     normalizado = (v - np.mean(v)) / np.std(v)
     st.write("Vector normalizado:", normalizado)
 
-elif selected_numpy == "Estudiantes":
+elif ej == 5:
     st.subheader("🎓 Gestión de Estudiantes del Ciclo")
     data = {
         "Nombres": ["Wendy", "Erick", "Sebastián", "Kenny", "Adriana", "Edwin"] + [""] * 12,
@@ -155,59 +192,42 @@ elif selected_numpy == "Estudiantes":
     csv = df_edit.to_csv(index=False).encode("utf-8")
     st.download_button("📥 Descargar CSV", csv, "estudiantes.csv", "text/csv")
 
-# ============================
-# EJERCICIOS PANDAS
-# ============================
-pandas_options = ["Cargar csv", "Promedio de notas", "Valores Faltantes",
-                  "Tabla dinamica", "Merge de dataframes", "Ejercicios Matplotlib"]
-selected_pandas = create_sidebar_buttons("🧩 Ejercicios (Pandas)", pandas_options, "pandas")
-
-try:
-    df
-except NameError:
-    df = pd.DataFrame({
-        "Nombres": ["Wendy", "Erick", "Sebastián", "Kenny", "Adriana", "Edwin"],
-        "Materia": ["IA", "Big Data", "Redes", "Desarrollo", "Bases", "Programación"],
-        "Nota": [9.5, 8.7, 9.0, 8.9, 9.3, 8.5],
-        "Edad": [22, 23, 21, 22, 23, 24]
-    })
-
-if selected_pandas == "Cargar csv":
-    st.subheader("📂 1. Cargar DataFrame de estudiantes")
-    uploaded_file = st.file_uploader("Sube tu archivo CSV de estudiantes", type=["csv"])
-    if uploaded_file is not None:
-        df = pd.read_csv(uploaded_file)
+# ================= Pandas =================
+ep = st.session_state.get("ejercicio_pandas", 0)
+if ep == 1:
+    st.subheader("📂 Cargar CSV")
+    try:
+        df = pd.read_csv("estudiantes.csv")
         st.success("✅ Archivo cargado correctamente")
-    else:
-        st.info("Usando datos de ejemplo...")
-    st.dataframe(df)
+        st.dataframe(df.head(10))
+    except FileNotFoundError:
+        st.error("❌ No se encontró el archivo 'estudiantes.csv'")
 
-elif selected_pandas == "Promedio de notas":
-    st.subheader("📊 2. Promedio de notas por materia")
+elif ep == 2:
+    st.subheader("📊 Promedio de notas por materia")
     promedio_materia = df.groupby("Materia")["Nota"].mean().sort_values(ascending=False)
     st.bar_chart(promedio_materia)
     st.dataframe(promedio_materia)
 
-elif selected_pandas == "Valores Faltantes":
-    st.subheader("🧠 3. Imputación de valores faltantes")
+elif ep == 3:
+    st.subheader("🧠 Valores faltantes")
     faltantes = df.isnull().sum()
-    st.write("Valores faltantes por columna:")
     st.write(faltantes)
     for col in df.columns:
         if df[col].dtype in ["float64", "int64"]:
             df[col].fillna(df[col].mean(), inplace=True)
         else:
             df[col].fillna("Desconocido", inplace=True)
-    st.success("✅ Todos los valores faltantes han sido reemplazados automáticamente")
+    st.success("✅ Valores faltantes imputados")
     st.dataframe(df)
 
-elif selected_pandas == "Tabla dinamica":
-    st.subheader("📅 4. Tabla dinámica: Edad y Nota promedio por materia")
+elif ep == 4:
+    st.subheader("📅 Tabla dinámica")
     pivot = df.pivot_table(values=["Edad", "Nota"], index="Materia", aggfunc="mean")
     st.dataframe(pivot)
 
-elif selected_pandas == "Merge de dataframes":
-    st.subheader("🔗 5. Merge entre DataFrames (Ejemplo)")
+elif ep == 5:
+    st.subheader("🔗 Merge de DataFrames")
     tutores = pd.DataFrame({
         "Materia": ["IA", "Big Data", "Redes", "Desarrollo", "Bases", "Programación"],
         "Tutor": ["Carlos", "María", "José", "Ana", "Luis", "Sofía"]
@@ -215,19 +235,26 @@ elif selected_pandas == "Merge de dataframes":
     merged = pd.merge(df, tutores, on="Materia", how="left")
     st.dataframe(merged)
 
-elif selected_pandas == "Ejercicios Matplotlib":
-    st.subheader("📈 Ejercicios con Matplotlib (Datos de Estudiantes)")
+elif ep == 6:
+    st.subheader("📈 Ejercicios Matplotlib (Datos de Estudiantes)")
+    uploaded_file = st.file_uploader("Sube tu archivo CSV de estudiantes", type=["csv"])
+    if uploaded_file is not None:
+        df = pd.read_csv(uploaded_file)
+        st.success("✅ Archivo cargado correctamente")
+    else:
+        st.info("Usando datos de ejemplo...")
+        df = pd.DataFrame({
+            "Nombres": ["Wendy", "Erick", "Sebastián", "Kenny", "Adriana", "Edwin"],
+            "Materia": ["IA", "Big Data", "Redes", "Desarrollo", "Bases", "Programación"],
+            "Nota": [9.5, 8.7, 9.0, 8.9, 9.3, 8.5],
+            "Edad": [22, 23, 21, 22, 23, 24]
+        })
     st.dataframe(df)
 
-# ============================
-# EJERCICIOS MATPLOTLIB
-# ============================
-plot_options = ["Grafico de lineas", "Grafico de barras", "Boxplot de notas por materia",
-                "Histograma de notas"]
-selected_plot = create_sidebar_buttons("🧩 Ejercicios (Matplotlib)", plot_options, "plot")
-
-if selected_plot == "Grafico de lineas":
-    st.subheader("📈 1. Evolución del promedio de notas (líneas)")
+# ================= Matplotlib =================
+epm = st.session_state.get("ejercicio_plot", 0)
+if epm == 1:
+    st.subheader("📈 Gráfico de líneas")
     promedio_por_estudiante = df.groupby("Nombres")["Nota"].mean()
     fig, ax = plt.subplots()
     ax.plot(promedio_por_estudiante.index, promedio_por_estudiante.values, marker='o')
@@ -237,8 +264,8 @@ if selected_plot == "Grafico de lineas":
     plt.xticks(rotation=45)
     st.pyplot(fig)
 
-elif selected_plot == "Grafico de barras":
-    st.subheader("📊 2. Top 5 materias con mejor promedio")
+elif epm == 2:
+    st.subheader("📊 Gráfico de barras")
     promedio_materia = df.groupby("Materia")["Nota"].mean().sort_values(ascending=False).head(5)
     fig, ax = plt.subplots()
     ax.bar(promedio_materia.index, promedio_materia.values)
@@ -248,8 +275,8 @@ elif selected_plot == "Grafico de barras":
     plt.xticks(rotation=30)
     st.pyplot(fig)
 
-elif selected_plot == "Boxplot de notas por materia":
-    st.subheader("📦 3. Boxplot de Notas por Materia")
+elif epm == 3:
+    st.subheader("📦 Boxplot de Notas por Materia")
     materias = df["Materia"].unique()
     data_box = [df[df["Materia"] == m]["Nota"].values for m in materias]
     fig, ax = plt.subplots()
@@ -259,15 +286,14 @@ elif selected_plot == "Boxplot de notas por materia":
     ax.set_ylabel("Nota")
     st.pyplot(fig)
 
-elif selected_plot == "Histograma de notas":
-    st.subheader("📊 4. Histograma de distribución de notas")
+elif epm == 4:
+    st.subheader("📊 Histograma de notas")
     fig, ax = plt.subplots()
     ax.hist(df["Nota"], bins=10, edgecolor='black')
     ax.set_title("Distribución de Notas de Estudiantes")
     ax.set_xlabel("Nota")
     ax.set_ylabel("Frecuencia")
     st.pyplot(fig)
-    st.success("✅ Ejercicios completados con datos de estudiantes")
 
 # ============================
 # FOOTER
