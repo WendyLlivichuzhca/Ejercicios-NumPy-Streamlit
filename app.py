@@ -240,22 +240,6 @@ elif categoria == "Pandas":
             merged = pd.merge(df, tutores, on="Materia", how="left")
             st.dataframe(merged)
 
-    elif menu_pandas == "Ejercicios Matplotlib":
-        st.subheader("📈 Ejercicios con Matplotlib (Datos de Estudiantes)")
-        uploaded_file = st.file_uploader("Sube tu archivo CSV de estudiantes", type=["csv"])
-        if uploaded_file is not None:
-            df = pd.read_csv(uploaded_file)
-            st.success("✅ Archivo cargado correctamente")
-        else:
-            st.info("Usando datos de ejemplo...")
-            df = pd.DataFrame({
-                "Nombres": ["Wendy", "Erick", "Sebastián", "Kenny", "Adriana", "Edwin"],
-                "Materia": ["IA", "Big Data", "Redes", "Desarrollo", "Bases", "Programación"],
-                "Nota": [9.5, 8.7, 9.0, 8.9, 9.3, 8.5],
-                "Edad": [22, 23, 21, 22, 23, 24]
-            })
-        st.dataframe(df)
-
 # ============================
 # EJERCICIOS MATPLOTLIB
 # ============================
