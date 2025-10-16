@@ -311,25 +311,31 @@ elif categoria == "Plotly":
     ])
 
     # ----------------------------
-    # Datos base para gráficos
+    # Datos base mejorados
     # ----------------------------
     fechas = pd.date_range("2025-01-01", periods=12, freq="M")
-    categorias = ["Categoría A", "Categoría B", "Categoría C"]
-    
-    # DataFrame para área apilada
+    categorias_area = ["Electrónica", "Ropa", "Alimentos", "Hogar", "Deportes"]
+
+    # Área apilada: valores más variados
     df_area_base = pd.DataFrame({
         "Fecha": fechas,
-        "Categoría A": np.random.randint(10, 50, 12),
-        "Categoría B": np.random.randint(5, 30, 12),
-        "Categoría C": np.random.randint(15, 40, 12)
+        **{cat: np.random.randint(50, 500, 12) for cat in categorias_area}
     })
 
-    # DataFrame para treemap
-    df_treemap_base = pd.DataFrame({
-        "Categoría": ["A","B","C"] * 4,
-        "Producto": ["Producto 1","Producto 2","Producto 3"] * 4,
-        "Valor": np.random.randint(20, 100, 12)
-    })
+    # Treemap: categorías y productos más realistas
+    productos_dict = {
+        "Electrónica": ["Laptop", "Tablet", "Smartphone", "Auriculares"],
+        "Ropa": ["Camisas", "Pantalones", "Zapatos", "Sombreros"],
+        "Alimentos": ["Frutas", "Verduras", "Snacks", "Bebidas"],
+        "Hogar": ["Muebles", "Decoración", "Electrodomésticos"],
+        "Deportes": ["Pelotas", "Bicicletas", "Ropa Deportiva"]
+    }
+
+    df_treemap_base = pd.DataFrame([
+        {"Categoría": cat, "Producto": prod, "Valor": np.random.randint(20, 500)}
+        for cat in productos_dict
+        for prod in productos_dict[cat]
+    ])
 
     # ----------------------------
     # Área apilada por categoría
@@ -338,7 +344,7 @@ elif categoria == "Plotly":
         st.subheader("📊 Gráfico de áreas apiladas")
         df_area = df_area_base.melt(
             id_vars=["Fecha"], 
-            value_vars=categorias,
+            value_vars=categorias_area,
             var_name="Categoría", 
             value_name="Valor"
         )
@@ -349,7 +355,7 @@ elif categoria == "Plotly":
             color="Categoría",
             title="Área apilada por categoría"
         )
-        st.plotly_chart(fig_area, key="area_apilada")  # ✅ Key único
+        st.plotly_chart(fig_area, key="area_apilada")
 
     # ----------------------------
     # Treemap de categoría y producto
@@ -362,17 +368,16 @@ elif categoria == "Plotly":
             values="Valor",
             title="Treemap de Categorías y Productos"
         )
-        st.plotly_chart(fig_treemap, key="treemap")  # ✅ Key único
+        st.plotly_chart(fig_treemap, key="treemap")
 
     # ----------------------------
     # Exportar figura a HTML
     # ----------------------------
     elif menu_plotly == "Exportar figura a HTML":
         st.subheader("💾 Exportar figura a HTML")
-
         df_area = df_area_base.melt(
             id_vars=["Fecha"], 
-            value_vars=categorias,
+            value_vars=categorias_area,
             var_name="Categoría", 
             value_name="Valor"
         )
@@ -383,7 +388,7 @@ elif categoria == "Plotly":
             color="Categoría",
             title="Área apilada por categoría"
         )
-        st.plotly_chart(fig_area_export, use_container_width=True, key="area_exportar")  # ✅ Key diferente
+        st.plotly_chart(fig_area_export, use_container_width=True, key="area_exportar")
 
         if st.button("📥 Generar archivo HTML"):
             with st.spinner("⏳ Generando archivo..."):
