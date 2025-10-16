@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import plotly.express as px
 
 # ============================
 # 🎨 ESTILO MODERNO WEB PREMIUM
@@ -122,7 +123,7 @@ st.sidebar.markdown("""
 """, unsafe_allow_html=True)
 
 # Menú principal de categorías
-categoria = st.sidebar.selectbox("Selecciona categoría", ["NumPy", "Pandas", "Matplotlib"])
+categoria = st.sidebar.selectbox("Selecciona categoría", ["NumPy", "Pandas", "Matplotlib", "Ploty"])
 
 # ============================
 # EJERCICIOS NUMPY
@@ -188,7 +189,7 @@ if categoria == "NumPy":
 # ============================
 elif categoria == "Pandas":
     st.sidebar.markdown("### 🧩 Ejercicios (Pandas)")
-    menu_pandas = st.sidebar.selectbox("Selecciona un ejercicio", ["Cargar csv", "Promedio de notas", "Valores Faltantes","Tabla dinamica", "Merge de dataframes", "Ejercicios Matplotlib"])
+    menu_pandas = st.sidebar.selectbox("Selecciona un ejercicio", ["Cargar csv", "Promedio de notas", "Valores Faltantes","Tabla dinamica", "Merge de dataframes"])
 
     try:
         df = pd.read_csv("estudiantes.csv")
@@ -239,22 +240,6 @@ elif categoria == "Pandas":
             })
             merged = pd.merge(df, tutores, on="Materia", how="left")
             st.dataframe(merged)
-
-    elif menu_pandas == "Ejercicios Matplotlib":
-        st.subheader("📈 Ejercicios con Matplotlib (Datos de Estudiantes)")
-        uploaded_file = st.file_uploader("Sube tu archivo CSV de estudiantes", type=["csv"])
-        if uploaded_file is not None:
-            df = pd.read_csv(uploaded_file)
-            st.success("✅ Archivo cargado correctamente")
-        else:
-            st.info("Usando datos de ejemplo...")
-            df = pd.DataFrame({
-                "Nombres": ["Wendy", "Erick", "Sebastián", "Kenny", "Adriana", "Edwin"],
-                "Materia": ["IA", "Big Data", "Redes", "Desarrollo", "Bases", "Programación"],
-                "Nota": [9.5, 8.7, 9.0, 8.9, 9.3, 8.5],
-                "Edad": [22, 23, 21, 22, 23, 24]
-            })
-        st.dataframe(df)
 
 # ============================
 # EJERCICIOS MATPLOTLIB
@@ -313,6 +298,49 @@ elif categoria == "Matplotlib":
         ax.set_ylabel("Frecuencia")
         st.pyplot(fig)
         st.success("✅ Ejercicios completados con datos de estudiantes")
+
+# ============================
+# EJERCICIOS PLOTY
+# ============================
+elif categoria == "Ploty":
+    st.sidebar.markdown("### 🧩 Ejercicios (Plotly)")
+    menu_plotly = st.sidebar.selectbox("Selecciona un ejercicio", [
+        "Área apilada por categoría", 
+        "Treemap de categoría y producto",
+        "Exportar figura a HTML"
+    ])
+
+    # Datos de ejemplo
+    df_plotly = pd.DataFrame({
+        "Fecha": pd.date_range("2025-01-01", periods=12, freq="M"),
+        "Categoría A": np.random.randint(10, 50, 12),
+        "Categoría B": np.random.randint(5, 30, 12),
+        "Categoría C": np.random.randint(15, 40, 12),
+        "Producto": ["Producto 1","Producto 2","Producto 3"] * 4,
+        "Valor": np.random.randint(20, 100, 12)
+    })
+
+    if menu_plotly == "Área apilada por categoría":
+        st.subheader("📊 Gráfico de áreas apiladas")
+        df_area = df_plotly.melt(id_vars="Fecha", value_vars=["Categoría A", "Categoría B", "Categoría C"],
+                                  var_name="Categoría", value_name="Valor")
+        fig = px.area(df_area, x="Fecha", y="Valor", color="Categoría", title="Área apilada por categoría")
+        st.plotly_chart(fig)
+
+    elif menu_plotly == "Treemap de categoría y producto":
+        st.subheader("🌍 Treemap de Categorías y Productos")
+        fig = px.treemap(df_plotly, path=["Categoría A", "Producto"], values="Valor",
+                         title="Treemap de Categorías y Productos")
+        st.plotly_chart(fig)
+
+    elif menu_plotly == "Exportar figura a HTML":
+        st.subheader("💾 Exportar figura a HTML")
+        df_area = df_plotly.melt(id_vars="Fecha", value_vars=["Categoría A", "Categoría B", "Categoría C"],
+                                  var_name="Categoría", value_name="Valor")
+        fig = px.area(df_area, x="Fecha", y="Valor", color="Categoría", title="Área apilada por categoría")
+        fig.write_html("grafico_plotly.html", include_plotlyjs="cdn")
+        st.success("✅ Figura exportada a 'grafico_plotly.html'. Ábrela en tu navegador para interactuar")
+
 
 # ============================
 # FOOTER
