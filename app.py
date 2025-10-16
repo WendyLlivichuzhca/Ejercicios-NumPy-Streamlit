@@ -370,8 +370,8 @@ elif categoria == "Plotly":  # Corregí el typo "Ploty" -> "Plotly"
     elif menu_plotly == "Exportar figura a HTML":
         st.subheader("💾 Exportar figura a HTML")
 
-    # Preparar DataFrame
-        df_area = df_area_base.melt(
+    # Preparar DataFrame a partir de df_area_base
+    df_area = df_area_base.melt(
         id_vars=["Fecha"], 
         value_vars=categorias,
         var_name="Categoría", 
@@ -379,7 +379,7 @@ elif categoria == "Plotly":  # Corregí el typo "Ploty" -> "Plotly"
     )
 
     # Crear gráfico
-        fig_area = px.area(
+    fig_area = px.area(
         df_area, 
         x="Fecha", 
         y="Valor", 
@@ -388,14 +388,14 @@ elif categoria == "Plotly":  # Corregí el typo "Ploty" -> "Plotly"
     )
 
     # Mostrar gráfico
-        st.plotly_chart(fig_area, use_container_width=True)
+    st.plotly_chart(fig_area, use_container_width=True)
 
     # Botón para exportar
-        exportar = st.button("📥 Generar archivo HTML")
-        if exportar:
-                with st.spinner("⏳ Generando archivo..."):
-                    fig_area.write_html("grafico_plotly.html", include_plotlyjs="cdn")
-                st.success("✅ Figura exportada correctamente a 'grafico_plotly.html'. Ábrela en tu navegador para interactuar")
+    if st.button("📥 Generar archivo HTML"):
+        with st.spinner("⏳ Generando archivo..."):
+            fig_area.write_html("grafico_plotly.html", include_plotlyjs="cdn")
+        st.success("✅ Figura exportada correctamente a 'grafico_plotly.html'. Ábrela en tu navegador para interactuar")
+
 
 # ============================
 # FOOTER
