@@ -365,25 +365,37 @@ elif categoria == "Plotly":  # Corregí el typo "Ploty" -> "Plotly"
         st.plotly_chart(fig)
 
     # ----------------------------
-    # Exportar figura a HTML
-    # ----------------------------
+# Exportar figura a HTML con botón
+# ----------------------------
     elif menu_plotly == "Exportar figura a HTML":
-        st.subheader("💾 Exportar figura a HTML")
-        df_area = df_area_base.melt(
-            id_vars=["Fecha"], 
-            value_vars=categorias,
-            var_name="Categoría", 
-            value_name="Valor"
-        )
-        fig = px.area(
-            df_area, 
-            x="Fecha", 
-            y="Valor", 
-            color="Categoría",
-            title="Área apilada por categoría"
-        )
-        fig.write_html("grafico_plotly.html", include_plotlyjs="cdn")
-        st.success("✅ Figura exportada a 'grafico_plotly.html'. Ábrela en tu navegador para interactuar")
+         st.subheader("💾 Exportar figura a HTML")
+    
+    # Preparamos el DataFrame para el área apilada
+    df_area = df_area_base.melt(
+        id_vars=["Fecha"], 
+        value_vars=categorias,
+        var_name="Categoría", 
+        value_name="Valor"
+    )
+    
+    # Creamos la figura
+    fig = px.area(
+        df_area, 
+        x="Fecha", 
+        y="Valor", 
+        color="Categoría",
+        title="Área apilada por categoría"
+    )
+    
+    st.plotly_chart(fig)
+    
+    # Botón para exportar
+    if st.button("📥 Generar archivo HTML"):
+        with st.spinner("⏳ Generando archivo..."):
+            # Guardar el HTML en la carpeta del proyecto
+            fig.write_html("grafico_plotly.html", include_plotlyjs="cdn")
+        st.success("✅ Figura exportada correctamente a 'grafico_plotly.html'. Ábrela en tu navegador para interactuar")
+
 
 # ============================
 # FOOTER
