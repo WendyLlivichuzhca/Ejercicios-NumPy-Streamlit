@@ -167,9 +167,11 @@ for display, option in menu_options:
 
 menu = st.session_state.menu
 
-# ============================
-# 🧮 EJERCICIOS NUMPY
-# ============================
+st.sidebar.markdown("""
+<div class="sidebar-title">
+Ejercicios (NumPy)
+</div>
+""", unsafe_allow_html=True)
 if menu == "Ejercicio 1":
     st.subheader("📈 Ejercicio 1: Estadísticas básicas con NumPy")
     arr = np.arange(1, 101)
