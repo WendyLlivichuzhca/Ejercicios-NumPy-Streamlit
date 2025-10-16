@@ -144,28 +144,6 @@ st.sidebar.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-menu_options = [
-    ("📈 Ejercicio 1", "Ejercicio 1"),
-    ("🎲 Ejercicio 2", "Ejercicio 2"),
-    ("📊 Ejercicio 3", "Ejercicio 3"),
-    ("⚙️ Ejercicio 4", "Ejercicio 4"),
-    ("🎓 Estudiantes", "Estudiantes"),
-    ("🐼 Ejercicios Pandas", "Ejercicios Pandas"),
-    ("🐼 Ejercicios Matplotlib", "Ejercicios Matplotlib")  
-]
-
-
-if "menu" not in st.session_state:
-    st.session_state.menu = "Ejercicio 1"
-
-# Crear botones premium con clase CSS
-for display, option in menu_options:
-    button_html = f'<button class="sidebar-button {"active" if st.session_state.menu==option else ""}">{display}</button>'
-    if st.sidebar.button(display, key=option):
-        st.session_state.menu = option
-
-
-menu = st.session_state.menu
 
 # Subtítulo general para todos los ejercicios
 st.sidebar.markdown("""
