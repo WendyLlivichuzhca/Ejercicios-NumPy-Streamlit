@@ -388,14 +388,14 @@ elif categoria == "Plotly":  # Corregí el typo "Ploty" -> "Plotly"
     )
 
     # Mostrar gráfico
-    st.plotly_chart(fig_area, use_container_width=True)
+        st.plotly_chart(fig_area, use_container_width=True)
 
     # Botón para exportar
-    exportar = st.button("📥 Generar archivo HTML")
-    if exportar:
-        with st.spinner("⏳ Generando archivo..."):
-            fig_area.write_html("grafico_plotly.html", include_plotlyjs="cdn")
-        st.success("✅ Figura exportada correctamente a 'grafico_plotly.html'. Ábrela en tu navegador para interactuar")
+        exportar = st.button("📥 Generar archivo HTML")
+        if exportar:
+                with st.spinner("⏳ Generando archivo..."):
+                    fig_area.write_html("grafico_plotly.html", include_plotlyjs="cdn")
+                st.success("✅ Figura exportada correctamente a 'grafico_plotly.html'. Ábrela en tu navegador para interactuar")
 
 # ============================
 # FOOTER
