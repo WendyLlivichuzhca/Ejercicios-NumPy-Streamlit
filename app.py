@@ -151,8 +151,8 @@ st.sidebar.markdown("""
 """, unsafe_allow_html=True)
 
 # Selección de menú
-menu = st.sidebar.selectbox("Selecciona un ejercicio", ["Ejercicio 1", "Ejercicio 2", "Ejercicio 3", "Ejercicio 4","Estudiantes"])
-if menu == "Ejercicio 1":
+menu_numpy  = st.sidebar.selectbox("Selecciona un ejercicio", ["Ejercicio 1", "Ejercicio 2", "Ejercicio 3", "Ejercicio 4","Estudiantes"])
+if menu_numpy  == "Ejercicio 1":
     st.subheader("📈 Ejercicio 1: Estadísticas básicas con NumPy")
     arr = np.arange(1, 101)
     st.write("Array:", arr)
@@ -162,7 +162,7 @@ if menu == "Ejercicio 1":
     col3.metric("Varianza", round(np.var(arr), 2))
     col4.metric("Percentil 90", round(np.percentile(arr, 90), 2))
 
-elif menu == "Ejercicio 2":
+elif menu_numpy  == "Ejercicio 2":
     st.subheader("🎲 Ejercicio 2: Matriz aleatoria 5x5")
     matriz = np.random.randn(5, 5)
     st.dataframe(pd.DataFrame(matriz))
@@ -170,7 +170,7 @@ elif menu == "Ejercicio 2":
     col1.success(f"Determinante: {np.linalg.det(matriz):.3f}")
     col2.info(f"Traza: {np.trace(matriz):.3f}")
 
-elif menu == "Ejercicio 3":
+elif menu_numpy  == "Ejercicio 3":
     st.subheader("📊 Ejercicio 3: Distribución de frecuencias")
     data = np.random.randint(0, 11, 1000)
     values, counts = np.unique(data, return_counts=True)
@@ -178,7 +178,7 @@ elif menu == "Ejercicio 3":
     st.dataframe(freq_df)
     st.bar_chart(freq_df.set_index('Número'))
 
-elif menu == "Ejercicio 4":
+elif menu_numpy  == "Ejercicio 4":
     st.subheader("⚙️ Ejercicio 4: Normalización de un vector")
     opcion = st.radio("Selecciona una opción:", ["Ingresar manualmente", "Generar aleatoriamente"])
     if opcion == "Ingresar manualmente":
@@ -190,7 +190,7 @@ elif menu == "Ejercicio 4":
     normalizado = (v - np.mean(v)) / np.std(v)
     st.write("Vector normalizado:", normalizado)
 
-elif menu == "Estudiantes":
+elif menu_numpy  == "Estudiantes":
     st.subheader("🎓 Gestión de Estudiantes del Ciclo")
     data = {
         "Nombres": ["Wendy", "Erick", "Sebastián", "Kenny", "Adriana", "Edwin"] + [""] * 12,
@@ -212,11 +212,11 @@ st.sidebar.markdown("""
 """, unsafe_allow_html=True)
 
 # Selección de menú
-menu = st.sidebar.selectbox("Selecciona un ejercicio", [
+menu_pandas  = st.sidebar.selectbox("Selecciona un ejercicio", [
     "Cargar csv", "Promedio de notas", "Valores Faltantes",
     "Tabla dinamica", "Merge de dataframes", "Ejercicios Matplotlib"
 ])
-if menu == "Cargar csv":
+if menu_pandas  == "Cargar csv":
     st.subheader("📂 1. Cargar DataFrame de estudiantes")
     try:
         df = pd.read_csv("estudiantes.csv")
@@ -225,13 +225,13 @@ if menu == "Cargar csv":
     except FileNotFoundError:
         st.error("❌ No se encontró el archivo 'estudiantes.csv'. Por favor verifica la ruta o súbelo manualmente.")
 
-elif menu == "Promedio de notas":
+elif menu_pandas  == "Promedio de notas":
     st.subheader("📊 2. Promedio de notas por materia")
     promedio_materia = df.groupby("Materia")["Nota"].mean().sort_values(ascending=False)
     st.bar_chart(promedio_materia)
     st.dataframe(promedio_materia)
 
-elif menu == "Valores Faltantes":
+elif menu_pandas  == "Valores Faltantes":
     st.subheader("🧠 3. Imputación de valores faltantes")
     faltantes = df.isnull().sum()
     st.write("Valores faltantes por columna:")
@@ -244,12 +244,12 @@ elif menu == "Valores Faltantes":
     st.success("✅ Todos los valores faltantes han sido reemplazados automáticamente")
     st.dataframe(df)
 
-elif menu == "Tabla dinamica":
+elif menu_pandas  == "Tabla dinamica":
     st.subheader("📅 4. Tabla dinámica: Edad y Nota promedio por materia")
     pivot = df.pivot_table(values=["Edad", "Nota"], index="Materia", aggfunc="mean")
     st.dataframe(pivot)
 
-elif menu == "Merge de dataframes":
+elif menu_pandas  == "Merge de dataframes":
     st.subheader("🔗 5. Merge entre DataFrames (Ejemplo)")
     tutores = pd.DataFrame({
         "Materia": ["IA", "Big Data", "Redes", "Desarrollo", "Bases", "Programación"],
@@ -258,7 +258,7 @@ elif menu == "Merge de dataframes":
     merged = pd.merge(df, tutores, on="Materia", how="left")
     st.dataframe(merged)
 
-elif menu == "Ejercicios Matplotlib":
+elif menu_pandas  == "Ejercicios Matplotlib":
     st.subheader("📈 Ejercicios con Matplotlib (Datos de Estudiantes)")
     uploaded_file = st.file_uploader("Sube tu archivo CSV de estudiantes", type=["csv"])
     if uploaded_file is not None:
@@ -280,11 +280,11 @@ st.sidebar.markdown("""
 """, unsafe_allow_html=True)
 
 # Selección de menú
-menu = st.sidebar.selectbox("Selecciona un ejercicio", [
+menu_plot  = st.sidebar.selectbox("Selecciona un ejercicio", [
     "Grafico de lineas", "Grafico de barras", "Boxplot de notas por materia",
     "Histograma de notas"
 ])
-if menu == "Grafico de lineas":
+if menu_plot == "Grafico de lineas":
     st.subheader("📈 1. Evolución del promedio de notas (líneas)")
     promedio_por_estudiante = df.groupby("Nombres")["Nota"].mean()
     fig, ax = plt.subplots()
@@ -295,7 +295,7 @@ if menu == "Grafico de lineas":
     plt.xticks(rotation=45)
     st.pyplot(fig)
 
-elif menu == "Grafico de barras":
+elif menu_plot == "Grafico de barras":
     st.subheader("📊 2. Top 5 materias con mejor promedio")
     promedio_materia = df.groupby("Materia")["Nota"].mean().sort_values(ascending=False).head(5)
     fig, ax = plt.subplots()
@@ -306,7 +306,7 @@ elif menu == "Grafico de barras":
     plt.xticks(rotation=30)
     st.pyplot(fig)
 
-elif menu == "Boxplot de notas por materia":
+elif menu_plot == "Boxplot de notas por materia":
     st.subheader("📦 3. Boxplot de Notas por Materia")
     materias = df["Materia"].unique()
     data_box = [df[df["Materia"] == m]["Nota"].values for m in materias]
@@ -317,7 +317,7 @@ elif menu == "Boxplot de notas por materia":
     ax.set_ylabel("Nota")
     st.pyplot(fig)
 
-elif menu == "Histograma de notas":
+elif menu_plot == "Histograma de notas":
     st.subheader("📊 4. Histograma de distribución de notas")
     fig, ax = plt.subplots()
     ax.hist(df["Nota"], bins=10, edgecolor='black')
